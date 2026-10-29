@@ -13,7 +13,6 @@ public class TrackingService {
         ChamberSummary summary = ChamberSummary.getChamberSummary(chamber);
         summary.setAlerts(summary.getAlerts() + 1);
         summary.setLastAlert(message);
-        ;
     }
 
     public void trackAction(String message) {
