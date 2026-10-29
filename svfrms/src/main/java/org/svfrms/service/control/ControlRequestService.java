@@ -1,12 +1,14 @@
-package org.svfrms.service;
+package org.svfrms.service.control;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.svfrms.entity.Control;
+import org.svfrms.request.ControlRequest;
 import org.svfrms.util.constants.ControlConstants;
 
 public class ControlRequestService {
-    public static List<String> controlQueue = new ArrayList<>();
+    public static List<ControlRequest> controlQueue = new ArrayList<>();
 
     public static void addControlRequest(String chamber, String control) {
         synchronized (controlQueue) {
@@ -17,7 +19,8 @@ public class ControlRequestService {
                     e.printStackTrace();
                 }
             }
-            controlQueue.add(chamber + "|" + control);
+            controlQueue.add(
+                    new ControlRequest(chamber, Control.valueOf(control.replace(" ", "_").toUpperCase())));
             controlQueue.notifyAll();
         }
     }

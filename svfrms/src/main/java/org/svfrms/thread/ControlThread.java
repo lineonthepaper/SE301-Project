@@ -1,7 +1,8 @@
 package org.svfrms.thread;
 
-import org.svfrms.service.ControlRequestService;
-import org.svfrms.service.ControlService;
+import org.svfrms.request.ControlRequest;
+import org.svfrms.service.control.ControlRequestService;
+import org.svfrms.service.control.ControlService;
 
 public class ControlThread extends Thread {
     public static volatile boolean controlThreadRunning = true;
@@ -9,7 +10,7 @@ public class ControlThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            String request;
+            ControlRequest request;
 
             synchronized (ControlRequestService.controlQueue) {
                 while (ControlRequestService.controlQueue.isEmpty() && controlThreadRunning) {
@@ -27,9 +28,8 @@ public class ControlThread extends Thread {
                 ControlRequestService.controlQueue.notifyAll();
             }
 
-            String[] parts = request.split("\\|");
-            ControlService controlService = new ControlService(parts[0]);
-            controlService.applyControl(parts[1]);
+            ControlService controlService = new ControlService(request.chamber());
+            controlService.applyControl(request);
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.svfrms;
 
-import org.svfrms.service.ControlRequestService;
 import org.svfrms.service.ReportService;
+import org.svfrms.service.control.ControlRequestService;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.thread.ChamberThread;
 import org.svfrms.thread.ControlThread;
@@ -37,7 +37,6 @@ public class SVFRMS {
         Thread genReport = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("printing report");
                 ReportService.printDailyReport();
             }
         });
