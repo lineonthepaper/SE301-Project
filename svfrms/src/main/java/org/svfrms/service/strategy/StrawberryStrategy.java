@@ -3,17 +3,15 @@ package org.svfrms.service.strategy;
 import org.svfrms.entity.Usage;
 import org.svfrms.service.ControlRequestService;
 import org.svfrms.service.strategy.interfaces.HandleCropHumidityStrategy;
-import org.svfrms.service.strategy.interfaces.HandleCropLightLevelStrategy;
-import org.svfrms.service.strategy.interfaces.HandleCropNutrientLevelStrategy;
 import org.svfrms.service.strategy.interfaces.HandleCropTemperatureStrategy;
 
-public class StrawberryStrategy implements HandleCropTemperatureStrategy,
-        HandleCropHumidityStrategy,
-        HandleCropLightLevelStrategy,
-        HandleCropNutrientLevelStrategy {
+public class StrawberryStrategy extends CropStrategy
+        implements HandleCropTemperatureStrategy,
+        HandleCropHumidityStrategy {
     private String chamber;
 
     public StrawberryStrategy(String chamber) {
+        super(chamber);
         this.chamber = chamber;
     }
 
@@ -44,20 +42,6 @@ public class StrawberryStrategy implements HandleCropTemperatureStrategy,
         String message = chamber + " Strawberry Low Humidity";
         Usage.totalWaterUsage += 25;
         ControlRequestService.addControlRequest(chamber, "Humidifier");
-        return message;
-    }
-
-    @Override
-    public String lightLevelLow() {
-        String message = chamber + " Low Light Level";
-        ControlRequestService.addControlRequest(chamber, "Grow Light");
-        return message;
-    }
-
-    @Override
-    public String nutrientLevelLow() {
-        String message = chamber + " Low Nutrient Level";
-        ControlRequestService.addControlRequest(chamber, "Nutrient Injector");
         return message;
     }
 }

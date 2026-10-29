@@ -11,6 +11,7 @@ public class SensorLimits {
 
     public SensorLimits(int low) {
         this.low = low;
+        this.high = Integer.MAX_VALUE;
     }
 
     public int getHigh() {

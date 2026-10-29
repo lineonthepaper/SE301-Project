@@ -1,16 +1,13 @@
 package org.svfrms.service.strategy;
 
 import org.svfrms.service.ControlRequestService;
-import org.svfrms.service.strategy.interfaces.HandleCropLightLevelStrategy;
-import org.svfrms.service.strategy.interfaces.HandleCropNutrientLevelStrategy;
 import org.svfrms.service.strategy.interfaces.HandleCropTemperatureStrategy;
 
-public class SpinachStrategy implements HandleCropTemperatureStrategy,
-        HandleCropLightLevelStrategy,
-        HandleCropNutrientLevelStrategy {
+public class SpinachStrategy extends CropStrategy implements HandleCropTemperatureStrategy {
     private String chamber;
 
     public SpinachStrategy(String chamber) {
+        super(chamber);
         this.chamber = chamber;
     }
 
@@ -24,20 +21,6 @@ public class SpinachStrategy implements HandleCropTemperatureStrategy,
     @Override
     public String temperatureLow() {
         String message = chamber + " Spinach Low Temp";
-        return message;
-    }
-
-    @Override
-    public String lightLevelLow() {
-        String message = chamber + " Low Light Level";
-        ControlRequestService.addControlRequest(chamber, "Grow Light");
-        return message;
-    }
-
-    @Override
-    public String nutrientLevelLow() {
-        String message = chamber + " Low Nutrient Level";
-        ControlRequestService.addControlRequest(chamber, "Nutrient Injector");
         return message;
     }
 }

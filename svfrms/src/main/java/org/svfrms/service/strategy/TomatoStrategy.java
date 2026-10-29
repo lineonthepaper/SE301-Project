@@ -3,21 +3,18 @@ package org.svfrms.service.strategy;
 import org.svfrms.entity.Usage;
 import org.svfrms.service.ControlRequestService;
 import org.svfrms.service.strategy.interfaces.HandleCropHumidityStrategy;
-import org.svfrms.service.strategy.interfaces.HandleCropLightLevelStrategy;
-import org.svfrms.service.strategy.interfaces.HandleCropNutrientLevelStrategy;
 import org.svfrms.service.strategy.interfaces.HandleCropSoilMoistureStrategy;
 import org.svfrms.service.strategy.interfaces.HandleCropTemperatureStrategy;
 
-public class TomatoStrategy
+public class TomatoStrategy extends CropStrategy
         implements HandleCropTemperatureStrategy,
         HandleCropHumidityStrategy,
-        HandleCropSoilMoistureStrategy,
-        HandleCropLightLevelStrategy,
-        HandleCropNutrientLevelStrategy {
+        HandleCropSoilMoistureStrategy {
 
     private String chamber;
 
     public TomatoStrategy(String chamber) {
+        super(chamber);
         this.chamber = chamber;
     }
 
@@ -54,20 +51,6 @@ public class TomatoStrategy
         String message = chamber + " Tomato Low Soil Moisture";
         Usage.totalWaterUsage += 50;
         ControlRequestService.addControlRequest(chamber, "Water Pump");
-        return message;
-    }
-
-    @Override
-    public String lightLevelLow() {
-        String message = chamber + " Low Light Level";
-        ControlRequestService.addControlRequest(chamber, "Grow Light");
-        return message;
-    }
-
-    @Override
-    public String nutrientLevelLow() {
-        String message = chamber + " Low Nutrient Level";
-        ControlRequestService.addControlRequest(chamber, "Nutrient Injector");
         return message;
     }
 }
