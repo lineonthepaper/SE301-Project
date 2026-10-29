@@ -60,6 +60,10 @@ public class AlertService {
         }
     }
 
+    public static List<String> getArchivedAlerts() {
+        return new ArrayList<>(archivedAlerts);
+    }
+
     public static void showAlerts() {
         for (String a : alerts) {
             System.out.println(a);
