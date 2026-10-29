@@ -92,7 +92,7 @@ public class ProcessSensorService {
         state.setLightLevel(value);
         SensorLimits limits = SensorConstants.LIGHT_LEVEL_LIMITS_MAP.get(crop);
         if (value < limits.getLow()) {
-            String message = HandleCropLightLevelStrategy.valueOf(crop).lightLevelLow(chamber);
+            String message = (new HandleCropLightLevelStrategy()).lightLevelLow(chamber);
             trackingService.trackAlert(message);
             alertService.addLog(message);
         }
@@ -104,7 +104,7 @@ public class ProcessSensorService {
         state.setLightLevel(value);
         SensorLimits limits = SensorConstants.NUTRIENT_LEVEL_LIMITS_MAP.get(crop);
         if (value < limits.getLow()) {
-            String message = HandleCropNutrientLevelStrategy.valueOf(crop).nutrientLevelLow(chamber);
+            String message = (new HandleCropNutrientLevelStrategy()).nutrientLevelLow(chamber);
             trackingService.trackAlert(message);
             alertService.addLog(message);
         }
