@@ -59,4 +59,10 @@ public class AlertService implements LoggingInterface {
             System.out.println("Archiving alerts... no active alerts to archive.");
         }
     }
+
+    public static void showAlerts() {
+        for (String a : alerts) {
+            System.out.println(a);
+        }
+    }
 }

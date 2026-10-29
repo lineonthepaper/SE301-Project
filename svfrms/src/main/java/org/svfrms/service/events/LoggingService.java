@@ -24,4 +24,10 @@ public class LoggingService implements LoggingInterface {
     public void printControlLog(String message) {
         System.out.println("\t\u001B[32m[" + chamber + "][CONTROL] " + message + "\u001B[0m");
     }
+
+    public static void showLogs() {
+        for (String s : sensorLogs) {
+            System.out.println(s);
+        }
+    }
 }
