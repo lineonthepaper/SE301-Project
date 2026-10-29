@@ -1,0 +1,11 @@
+# Java class files
+*.class
+
+# OS
+.DS_Store
+
+# Temp files
+*.tmp
+
+# Generated files
+daily_report.txt
