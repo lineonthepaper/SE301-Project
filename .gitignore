@@ -1,5 +1,5 @@
 # Java class files
-*.class
+**/target/*
 
 # OS
 .DS_Store
@@ -9,3 +9,5 @@
 
 # Generated files
 daily_report.txt
+**/maven-archiver/*
+**/maven-status/*
