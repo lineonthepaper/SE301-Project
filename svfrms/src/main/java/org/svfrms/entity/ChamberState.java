@@ -1,60 +1,29 @@
 package org.svfrms.entity;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
 
 public class ChamberState {
-    private double temperature = 24;
-    private double humidity = 70;
-    private double soilMoisture = 60;
-    private double lightLevel = 600;
-    private double nutrientLevel = 70;
+    private final Map<SensorType, Double> readings = new EnumMap<>(SensorType.class);
 
-    public static HashMap<String, ChamberState> chamberStates = new HashMap<>();
-
-    public static ChamberState getChamberState(String chamber) {
-        if (!chamberStates.containsKey(chamber)) {
-            chamberStates.put(chamber, new ChamberState());
+    public ChamberState() {
+        for (SensorType type : SensorType.values()) {
+            readings.put(type, type.getInitialValue());
         }
-        return chamberStates.get(chamber);
     }
 
-    public double getTemperature() {
-        return this.temperature;
+    public synchronized void set(SensorType type, double value) {
+        readings.put(type, value);
     }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
+    public synchronized double get(SensorType type) {
+        return readings.get(type);
     }
 
-    public double getHumidity() {
-        return this.humidity;
-    }
-
-    public void setHumidity(double humidity) {
-        this.humidity = humidity;
-    }
-
-    public double getSoilMoisture() {
-        return this.soilMoisture;
-    }
-
-    public void setSoilMoisture(double soilMoisture) {
-        this.soilMoisture = soilMoisture;
-    }
-
-    public double getLightLevel() {
-        return this.lightLevel;
-    }
-
-    public void setLightLevel(double lightLevel) {
-        this.lightLevel = lightLevel;
-    }
-
-    public double getNutrientLevel() {
-        return this.nutrientLevel;
-    }
-
-    public void setNutrientLevel(double nutrientLevel) {
-        this.nutrientLevel = nutrientLevel;
+    public synchronized double update(SensorType type, DoubleUnaryOperator change) {
+        double updated = change.applyAsDouble(readings.get(type));
+        readings.put(type, updated);
+        return updated;
     }
 }
