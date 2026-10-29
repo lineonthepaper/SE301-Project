@@ -1,4 +1,4 @@
-package org.svfrms.service.controls;
+package org.svfrms.service;
 
 import org.svfrms.entity.ChamberState;
 import org.svfrms.service.events.LoggingService;
