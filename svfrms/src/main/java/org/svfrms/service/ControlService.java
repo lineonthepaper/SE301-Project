@@ -15,6 +15,18 @@ public class ControlService {
         this.loggingService = new LoggingService(chamber);
     }
 
+    public void applyControl(String control) {
+        switch (control) {
+            case "Cooling Fan" -> applyCoolingFan();
+            case "Water Pump" -> applyWaterPump();
+            case "Nutrient Injector" -> applyNutrientInjector();
+            case "Humidifier" -> applyHumidifier();
+            case "Dehumidifier" -> applyDehumidifier();
+            case "Grow Light" -> applyGrowLight();
+            default -> System.out.println("Unknown control");
+        }
+    }
+
     public void applyCoolingFan() {
         state.setTemperature(Math.max(18, state.getTemperature() - 5));
         trackingService.trackAction("Cooling Fan Activated");
