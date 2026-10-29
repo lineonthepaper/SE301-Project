@@ -1,1 +1,1 @@
-javac -d ./target/classes ./src/main/java/org/svfrms/*.java
+mvn install
