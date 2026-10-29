@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.svfrms.service.ReportService;
 
-public class AlertService implements LoggingInterface {
+public class AlertService {
     private String chamber;
     private String crop;
 
@@ -19,14 +19,14 @@ public class AlertService implements LoggingInterface {
         this.crop = crop;
     }
 
-    public void addLog(String message) {
+    public void addAlert(String message) {
         alerts.add(message);
         totalAlerts++;
         totalAlertsGenerated++;
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
-    public List<String> getLogs() {
+    public List<String> getAlerts() {
         return new ArrayList<>(alerts);
     }
 

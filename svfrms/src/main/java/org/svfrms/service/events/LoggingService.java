@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LoggingService implements LoggingInterface {
+public class LoggingService {
     private String chamber;
 
     private static List<String> sensorLogs = new ArrayList<>();

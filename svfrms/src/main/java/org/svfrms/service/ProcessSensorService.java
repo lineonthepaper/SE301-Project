@@ -48,7 +48,7 @@ public class ProcessSensorService {
             }
             if (!message.equals("")) {
                 trackingService.trackAlert(message);
-                alertService.addLog(message);
+                alertService.addAlert(message);
             }
         }
     }
@@ -67,7 +67,7 @@ public class ProcessSensorService {
             }
             if (!message.equals("")) {
                 trackingService.trackAlert(message);
-                alertService.addLog(message);
+                alertService.addAlert(message);
             }
         }
     }
@@ -81,7 +81,7 @@ public class ProcessSensorService {
             if (value < limits.getLow()) {
                 String message = HandleCropSoilMoistureStrategy.valueOf(crop).soilMoistureLow(chamber);
                 trackingService.trackAlert(message);
-                alertService.addLog(message);
+                alertService.addAlert(message);
             }
         }
     }
@@ -94,7 +94,7 @@ public class ProcessSensorService {
         if (value < limits.getLow()) {
             String message = (new HandleCropLightLevelStrategy()).lightLevelLow(chamber);
             trackingService.trackAlert(message);
-            alertService.addLog(message);
+            alertService.addAlert(message);
         }
     }
 
@@ -106,7 +106,7 @@ public class ProcessSensorService {
         if (value < limits.getLow()) {
             String message = (new HandleCropNutrientLevelStrategy()).nutrientLevelLow(chamber);
             trackingService.trackAlert(message);
-            alertService.addLog(message);
+            alertService.addAlert(message);
         }
     }
 }
