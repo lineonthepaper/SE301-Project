@@ -31,4 +31,12 @@ public class AlertService implements LoggingInterface {
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
+    public static int getTotalAlerts() {
+        return totalAlerts;
+    }
+
+    public static int getTotalAlertsGenerated() {
+        return totalAlertsGenerated;
+    }
+
 }
