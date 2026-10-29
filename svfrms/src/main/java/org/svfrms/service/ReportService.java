@@ -17,4 +17,8 @@ public class ReportService {
         System.out.println("Energy Usage: " + Usage.totalEnergyUsage + " kWh");
         reports.add("Daily Report");
     }
+
+    public static void addReport(String report) {
+        reports.add(report);
+    }
 }
