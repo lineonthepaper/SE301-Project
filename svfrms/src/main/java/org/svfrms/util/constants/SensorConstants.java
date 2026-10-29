@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.svfrms.util.SensorLimits;
+
 public class SensorConstants {
     public static final List<String> CROPS = List.of(
             "Tomato",
@@ -44,26 +46,4 @@ public class SensorConstants {
                         map1.putAll(map2);
                         return map1;
                     });
-}
-
-class SensorLimits {
-    int high;
-    int low;
-
-    SensorLimits(int high, int low) {
-        this.high = high;
-        this.low = low;
-    }
-
-    SensorLimits(int low) {
-        this.low = low;
-    }
-
-    public int getHigh() {
-        return this.high;
-    }
-
-    public int getLow() {
-        return this.low;
-    }
 }
