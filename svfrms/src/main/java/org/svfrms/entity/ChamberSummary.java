@@ -8,13 +8,17 @@ public class ChamberSummary {
     private String lastAction = "No action";
     private String lastAlert = "None";
 
-    public static HashMap<String, ChamberSummary> chamberSummaries = new HashMap<>();
+    private static HashMap<String, ChamberSummary> chamberSummaries = new HashMap<>();
 
     public static ChamberSummary getChamberSummary(String chamber) {
         if (!chamberSummaries.containsKey(chamber)) {
             chamberSummaries.put(chamber, new ChamberSummary());
         }
         return chamberSummaries.get(chamber);
+    }
+
+    public static HashMap<String, ChamberSummary> getChamberSummaries() {
+        return new HashMap<>(chamberSummaries);
     }
 
     public int getAlerts() {
