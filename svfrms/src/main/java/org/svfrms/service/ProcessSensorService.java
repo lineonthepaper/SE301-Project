@@ -20,22 +20,23 @@ import org.svfrms.util.SensorLimits;
 public class ProcessSensorService {
     private final String chamber;
     private final String crop;
+    private final ControlQueue controlQueue;
 
     private final ChamberState state;
     private final LoggingService loggingService;
     private final TrackingService trackingService;
     private final AlertService alertService;
-    private final ControlQueue controlQueue;
 
     public ProcessSensorService(String chamber, String crop,
             ControlQueue controlQueue) {
         this.chamber = chamber;
         this.crop = crop;
+        this.controlQueue = controlQueue;
+
         this.state = ChamberRegistry.getState(chamber);
         this.loggingService = LoggingService.getInstance();
         this.trackingService = TrackingService.getInstance();
         this.alertService = AlertService.getInstance();
-        this.controlQueue = controlQueue;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
