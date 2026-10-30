@@ -1,35 +1,54 @@
 package org.svfrms;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.svfrms.runnable.ChamberRunnable;
+import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.ReportService;
-import org.svfrms.service.control.ControlRequestService;
+import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
-import org.svfrms.thread.ChamberThread;
-import org.svfrms.thread.ControlThread;
 
 public class SVFRMS {
     public static void main(String[] args) {
-        Thread activateControlThread = new ControlThread();
-        Thread t1 = new ChamberThread("CH1", "Tomato");
-        Thread t2 = new ChamberThread("CH2", "Strawberry");
-        Thread t3 = new ChamberThread("CH3", "Lettuce");
-        Thread t4 = new ChamberThread("CH4", "Chili");
+        List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4");
+        List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili");
 
-        activateControlThread.start();
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        try {
-            t1.join();
-            t2.join();
-            t3.join();
-            t4.join();
-            synchronized (ControlRequestService.controlQueue) {
-                ControlThread.controlThreadRunning = false;
-                ControlRequestService.controlQueue.notifyAll();
+        ControlQueue controlQueue = new ControlQueue(new ControlService()::applyControl);
+        Thread controlQueueThread = new Thread(controlQueue);
+        try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size() + 1)) {
+            ExecutorCompletionService<Void> completed = new ExecutorCompletionService<>(exec);
+            try {
+                completed.submit(() -> {
+                    controlQueueThread.start();
+                    return null;
+                });
+                for (int i = 0; i < chamberList.size(); i++) {
+                    System.out.println("submitting " + i);
+                    ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
+                            controlQueue);
+
+                    exec.submit(chamberRunnable);
+                }
+
+                completed.submit(() -> {
+                    controlQueue.shutdown();
+                    return null;
+                });
+                completed.take().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } finally {
+                exec.shutdownNow();
             }
-
-            activateControlThread.join();
+        }
+        try {
+            controlQueueThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,6 +79,5 @@ public class SVFRMS {
 
         System.out.println("System finished sensor processing.");
         ReportService.saveArchiveReport();
-
     }
 }
