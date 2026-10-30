@@ -7,10 +7,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeSet;
 
+import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberSummary;
 import org.svfrms.entity.Usage;
 import org.svfrms.service.events.AlertService;
@@ -46,7 +47,7 @@ public class ReportService {
             Files.createDirectories(ARCHIVE_DIR);
 
             List<String> archivedAlerts = AlertService.getArchivedAlerts();
-            HashMap<String, ChamberSummary> chamberSummaries = ChamberSummary.getChamberSummaries();
+            SortedMap<String, ChamberSummary> chamberSummaries = ChamberRegistry.getSummariesByChamber();
 
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
