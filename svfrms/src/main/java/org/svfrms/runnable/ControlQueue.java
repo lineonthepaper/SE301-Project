@@ -5,12 +5,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
 
 import org.svfrms.request.ControlRequest;
+import org.svfrms.util.constants.ControlConstants;
 
 public class ControlQueue implements Runnable {
-    public static final int CAPACITY = 5;
     private static final ControlRequest STOP = new ControlRequest("STOP", null);
     private final Consumer<ControlRequest> executor;
-    private final BlockingQueue<ControlRequest> queue = new ArrayBlockingQueue<>(CAPACITY);
+    private final BlockingQueue<ControlRequest> queue = new ArrayBlockingQueue<>(ControlConstants.controlQueueSize);
 
     public ControlQueue(Consumer<ControlRequest> executor) {
         this.executor = executor;
