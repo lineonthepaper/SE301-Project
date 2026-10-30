@@ -32,9 +32,9 @@ public class ProcessSensorService {
         this.chamber = chamber;
         this.crop = crop;
         this.state = ChamberRegistry.getState(chamber);
-        this.loggingService = new LoggingService();
-        this.trackingService = new TrackingService();
-        this.alertService = new AlertService();
+        this.loggingService = LoggingService.getInstance();
+        this.trackingService = TrackingService.getInstance();
+        this.alertService = AlertService.getInstance();
         this.controlQueue = controlQueue;
     }
 

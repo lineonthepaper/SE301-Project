@@ -10,6 +10,19 @@ public class AlertService {
     private static final List<String> alerts = new ArrayList<>();
     private static final List<String> archivedAlerts = new ArrayList<>();
 
+    private static AlertService instance = null;
+
+    private AlertService() {
+        // empty constructor
+    }
+
+    public static synchronized AlertService getInstance() {
+        if (instance == null) {
+            instance = new AlertService();
+        }
+        return instance;
+    }
+
     public synchronized void addAlert(String chamber, String crop, String message) {
         alerts.add(message);
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);

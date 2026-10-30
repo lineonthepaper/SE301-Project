@@ -16,6 +16,19 @@ public class Usage {
     private static final ReadLock usageReadLock = usageLock.readLock();
     private static final WriteLock usageWriteLock = usageLock.writeLock();
 
+    private static Usage instance = null;
+
+    private Usage() {
+        // empty constructor
+    }
+
+    public static synchronized Usage getInstance() {
+        if (instance == null) {
+            instance = new Usage();
+        }
+        return instance;
+    }
+
     public int getTotalEnergyUsage() {
         usageReadLock.lock();
         try {

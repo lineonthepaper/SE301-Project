@@ -7,6 +7,19 @@ import java.util.List;
 public class LoggingService {
     private static final List<String> sensorLogs = new ArrayList<>();
 
+    private static LoggingService instance;
+
+    private LoggingService() {
+        // empty constructor
+    }
+
+    public static synchronized LoggingService getInstance() {
+        if (instance == null) {
+            instance = new LoggingService();
+        }
+        return instance;
+    }
+
     public synchronized void addLog(String message) {
         sensorLogs.add(new Date() + " : " + message);
     }

@@ -21,6 +21,19 @@ public class ReportService {
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
 
+    private static ReportService instance = null;
+
+    private ReportService() {
+        // empty constructor
+    }
+
+    public static synchronized ReportService getInstance() {
+        if (instance == null) {
+            instance = new ReportService();
+        }
+        return instance;
+    }
+
     private List<String> getSummaryLines(AlertService alertService, Usage usage) {
         List<String> summaryLines = new ArrayList<>();
         summaryLines.add("Generated Alerts: " + alertService.getTotalAlertsGenerated());

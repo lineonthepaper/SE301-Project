@@ -11,8 +11,8 @@ public class ControlService {
     private final LoggingService loggingService;
 
     public ControlService() {
-        this.trackingService = new TrackingService();
-        this.loggingService = new LoggingService();
+        this.trackingService = TrackingService.getInstance();
+        this.loggingService = LoggingService.getInstance();
     }
 
     public void applyControl(ControlRequest controlRequest) {
