@@ -17,10 +17,6 @@ public class ControlQueue implements Runnable {
     }
 
     public void addControlRequest(ControlRequest controlRequest) throws InterruptedException {
-        System.out.println(controlRequest);
-        for (ControlRequest r : queue) {
-            System.out.println(r);
-        }
         queue.put(controlRequest);
     }
 
