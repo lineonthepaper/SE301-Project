@@ -11,7 +11,7 @@ import org.svfrms.enums.Control;
 import org.svfrms.enums.Crop;
 import org.svfrms.enums.SensorType;
 import org.svfrms.request.ControlRequest;
-import org.svfrms.service.control.ControlService;
+import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
@@ -27,16 +27,17 @@ public class ProcessSensorService {
     private LoggingService loggingService;
     private TrackingService trackingService;
     private AlertService alertService;
-    private ControlService controlService;
+    private ControlQueue controlQueue;
 
-    public ProcessSensorService(String chamber, String crop) {
+    public ProcessSensorService(String chamber, String crop,
+            ControlQueue controlQueue) {
         this.chamber = chamber;
         this.crop = crop;
         this.state = ChamberRegistry.getState(chamber);
-        this.loggingService = new LoggingService(chamber);
-        this.trackingService = new TrackingService(chamber);
-        this.alertService = new AlertService(chamber, crop);
-        this.controlService = new ControlService(chamber);
+        this.loggingService = new LoggingService();
+        this.trackingService = new TrackingService();
+        this.alertService = new AlertService();
+        this.controlQueue = controlQueue;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
@@ -62,7 +63,7 @@ public class ProcessSensorService {
         }
     }
 
-    public void process(SensorType sensor, double value) {
+    public void process(SensorType sensor, double value) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
@@ -86,12 +87,11 @@ public class ProcessSensorService {
         if (control == null) {
             return;
         }
-
-        controlService.applyControl(new ControlRequest(chamber, control));
+        controlQueue.addControlRequest(new ControlRequest(chamber, control));
 
         String message = alertMessage(sensor, breach);
-        trackingService.trackAlert(message);
-        alertService.addAlert(message);
+        trackingService.trackAlert(chamber, message);
+        alertService.addAlert(chamber, crop, message);
 
         recordUsage(cropProfile, sensor, breach);
     }

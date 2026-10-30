@@ -7,23 +7,22 @@ import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
 
 public class ControlService {
-    private ChamberState state;
     private TrackingService trackingService;
     private LoggingService loggingService;
 
-    public ControlService(String chamber) {
-        this.state = ChamberRegistry.getState(chamber);
-        this.trackingService = new TrackingService(chamber);
-        this.loggingService = new LoggingService(chamber);
+    public ControlService() {
+        this.trackingService = new TrackingService();
+        this.loggingService = new LoggingService();
     }
 
     public void applyControl(ControlRequest controlRequest) {
+        ChamberState state = ChamberRegistry.getState(controlRequest.chamber());
         controlRequest.control().apply(state);
         String result = controlRequest.control().apply(state);
         String activated = controlRequest.control().getLabel() + " Activated";
-        trackingService.trackAlert(activated);
-        loggingService.printControlLog(activated);
-        loggingService.printControlLog(result);
+        trackingService.trackAlert(controlRequest.chamber(), activated);
+        loggingService.printControlLog(controlRequest.chamber(), activated);
+        loggingService.printControlLog(controlRequest.chamber(), result);
     }
 
 }
