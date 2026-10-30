@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
-import org.svfrms.entity.Control;
-import org.svfrms.entity.SensorType;
 import org.svfrms.entity.Usage;
+import org.svfrms.enums.Breach;
+import org.svfrms.enums.Control;
+import org.svfrms.enums.SensorType;
 import org.svfrms.request.ControlRequest;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
-import org.svfrms.util.Breach;
 import org.svfrms.util.SensorLimits;
 import org.svfrms.util.constants.SensorConstants;
 

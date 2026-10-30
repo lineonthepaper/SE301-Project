@@ -1,6 +1,8 @@
-package org.svfrms.entity;
+package org.svfrms.enums;
 
 import java.util.function.DoubleUnaryOperator;
+
+import org.svfrms.entity.ChamberState;
 
 public enum Control {
     COOLING_FAN("Cooling Fan", SensorType.TEMPERATURE, t -> Math.max(18, t - 5), "Temperature reduced to %sC"),

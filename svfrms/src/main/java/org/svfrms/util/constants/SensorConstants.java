@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.svfrms.util.Breach;
+import org.svfrms.enums.Breach;
 import org.svfrms.util.SensorLimits;
 
 public class SensorConstants {

@@ -2,8 +2,8 @@ package org.svfrms.thread;
 
 import java.util.Random;
 
-import org.svfrms.entity.SensorType;
 import org.svfrms.entity.Usage;
+import org.svfrms.enums.SensorType;
 import org.svfrms.service.ProcessSensorService;
 
 public class ChamberThread extends Thread {

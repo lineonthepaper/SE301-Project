@@ -4,6 +4,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 
+import org.svfrms.enums.SensorType;
+
 public class ChamberState {
     private final Map<SensorType, Double> readings = new EnumMap<>(SensorType.class);
 

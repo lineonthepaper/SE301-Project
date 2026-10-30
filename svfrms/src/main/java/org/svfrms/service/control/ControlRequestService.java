@@ -3,7 +3,7 @@ package org.svfrms.service.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.svfrms.entity.Control;
+import org.svfrms.enums.Control;
 import org.svfrms.request.ControlRequest;
 import org.svfrms.util.constants.ControlConstants;
 

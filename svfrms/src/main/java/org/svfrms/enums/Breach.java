@@ -1,4 +1,4 @@
-package org.svfrms.util;
+package org.svfrms.enums;
 
 public enum Breach {
     HIGH("High"), LOW("Low");

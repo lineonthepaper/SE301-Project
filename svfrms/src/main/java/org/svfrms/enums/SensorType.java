@@ -1,6 +1,4 @@
-package org.svfrms.entity;
-
-import org.svfrms.util.Breach;
+package org.svfrms.enums;
 
 public enum SensorType {
     TEMPERATURE("Temperature", "Temp", 24, true),
