@@ -6,23 +6,12 @@ import java.util.List;
 import org.svfrms.service.ReportService;
 
 public class AlertService {
-    private String chamber;
-    private String crop;
 
     private static List<String> alerts = new ArrayList<>();
     private static List<String> archivedAlerts = new ArrayList<>();
 
-    public AlertService(String chamber, String crop) {
-        this.chamber = chamber;
-        this.crop = crop;
-    }
-
-    public void addAlert(String message) {
+    public void addAlert(String chamber, String crop, String message) {
         alerts.add(message);
-        System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
-    }
-
-    public void printAlertLog(String message) {
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 

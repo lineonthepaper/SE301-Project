@@ -5,13 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class LoggingService {
-    private String chamber;
-
     private static List<String> sensorLogs = new ArrayList<>();
-
-    public LoggingService(String chamber) {
-        this.chamber = chamber;
-    }
 
     public void addLog(String message) {
         sensorLogs.add(new Date() + " : " + message);
@@ -21,7 +15,7 @@ public class LoggingService {
         return new ArrayList<>(sensorLogs);
     }
 
-    public void printControlLog(String message) {
+    public void printControlLog(String chamber, String message) {
         System.out.println("\t\u001B[32m[" + chamber + "][CONTROL] " + message + "\u001B[0m");
     }
 
