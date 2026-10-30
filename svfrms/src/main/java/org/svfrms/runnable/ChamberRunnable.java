@@ -23,8 +23,9 @@ public class ChamberRunnable implements Runnable {
                 processSensorService.process(SensorType.SOIL, random.nextInt(60));
                 processSensorService.process(SensorType.LIGHT, random.nextInt(900));
                 processSensorService.process(SensorType.NUTRIENT, random.nextInt(80));
-                Usage.totalWaterUsage += 2;
-                Usage.totalEnergyUsage += 1;
+
+                Usage.recordWaterUsage(2);
+                Usage.recordEnergyUsage(1);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

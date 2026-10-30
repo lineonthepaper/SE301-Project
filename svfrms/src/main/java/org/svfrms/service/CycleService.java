@@ -4,10 +4,10 @@ import org.svfrms.entity.Usage;
 
 public class CycleService {
     public static void irrigationCycle() {
-        Usage.totalWaterUsage += 100;
+        Usage.recordWaterUsage(100);
     }
 
     public static void feedingCycle() {
-        Usage.totalEnergyUsage += 20;
+        Usage.recordEnergyUsage(20);
     }
 }

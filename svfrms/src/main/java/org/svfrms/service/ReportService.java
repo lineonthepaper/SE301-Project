@@ -25,8 +25,8 @@ public class ReportService {
         List<String> summaryLines = new ArrayList<>();
         summaryLines.add("Generated Alerts: " + AlertService.getTotalAlertsGenerated());
         summaryLines.add("Active Alerts: " + AlertService.getAlerts().size());
-        summaryLines.add("Water Usage: " + Usage.totalWaterUsage + " L");
-        summaryLines.add("Energy Usage: " + Usage.totalEnergyUsage + " kWh");
+        summaryLines.add("Water Usage: " + Usage.getTotalWaterUsage() + " L");
+        summaryLines.add("Energy Usage: " + Usage.getTotalEnergyUsage() + " kWh");
         return summaryLines;
     }
 

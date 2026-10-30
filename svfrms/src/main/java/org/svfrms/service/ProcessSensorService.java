@@ -52,18 +52,18 @@ public class ProcessSensorService {
     private void recordUsage(CropProfile cropProfile, SensorType sensor, Breach breach) {
         EnergyUsage energyUsage = cropProfile.energyUsageMap().get(sensor);
         if (energyUsage != null) {
-            Usage.totalEnergyUsage += breach == Breach.HIGH ? energyUsage.getHighBreachUsage()
-                    : energyUsage.getLowBreachUsage();
+            Usage.recordEnergyUsage(breach == Breach.HIGH ? energyUsage.getHighBreachUsage()
+                    : energyUsage.getLowBreachUsage());
         }
 
         WaterUsage waterUsage = cropProfile.waterUsageMap().get(sensor);
         if (waterUsage != null) {
-            Usage.totalWaterUsage += breach == Breach.HIGH ? waterUsage.getHighBreachUsage()
-                    : waterUsage.getLowBreachUsage();
+            Usage.recordWaterUsage(breach == Breach.HIGH ? waterUsage.getHighBreachUsage()
+                    : waterUsage.getLowBreachUsage());
         }
     }
 
-    public void process(SensorType sensor, double value) throws InterruptedException {
+    public synchronized void process(SensorType sensor, double value) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
