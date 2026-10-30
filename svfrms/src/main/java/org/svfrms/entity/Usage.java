@@ -7,9 +7,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 public class Usage {
     private volatile static int totalWaterUsage = 0;
     private volatile static int totalEnergyUsage = 0;
-    private static ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
-    private static ReadLock usageReadLock = usageLock.readLock();
-    private static WriteLock usageWriteLock = usageLock.writeLock();
+    private static final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
+    private static final ReadLock usageReadLock = usageLock.readLock();
+    private static final WriteLock usageWriteLock = usageLock.writeLock();
 
     public static int getTotalEnergyUsage() {
         usageReadLock.lock();

@@ -1,8 +1,8 @@
 package org.svfrms.util;
 
 public class WaterUsage implements UsageInterface {
-    private int highBreachUsage;
-    private int lowBreachUsage;
+    private final int highBreachUsage;
+    private final int lowBreachUsage;
 
     public WaterUsage(
             int highBreachUsage,

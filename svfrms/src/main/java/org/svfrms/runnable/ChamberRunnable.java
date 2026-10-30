@@ -7,8 +7,8 @@ import org.svfrms.enums.SensorType;
 import org.svfrms.service.ProcessSensorService;
 
 public class ChamberRunnable implements Runnable {
-    private ProcessSensorService processSensorService;
-    private static Random random = new Random();
+    private final ProcessSensorService processSensorService;
+    private static final Random random = new Random();
 
     public ChamberRunnable(String chamber, String crop, ControlQueue controlQueue) {
         this.processSensorService = new ProcessSensorService(chamber, crop, controlQueue);

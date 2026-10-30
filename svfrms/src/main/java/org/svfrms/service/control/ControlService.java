@@ -7,8 +7,8 @@ import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
 
 public class ControlService {
-    private TrackingService trackingService;
-    private LoggingService loggingService;
+    private final TrackingService trackingService;
+    private final LoggingService loggingService;
 
     public ControlService() {
         this.trackingService = new TrackingService();

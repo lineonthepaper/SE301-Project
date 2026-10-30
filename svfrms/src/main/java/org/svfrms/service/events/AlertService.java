@@ -7,8 +7,8 @@ import org.svfrms.service.ReportService;
 
 public class AlertService {
 
-    private static List<String> alerts = new ArrayList<>();
-    private static List<String> archivedAlerts = new ArrayList<>();
+    private static final List<String> alerts = new ArrayList<>();
+    private static final List<String> archivedAlerts = new ArrayList<>();
 
     public synchronized void addAlert(String chamber, String crop, String message) {
         alerts.add(message);

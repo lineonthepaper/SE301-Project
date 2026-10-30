@@ -1,8 +1,8 @@
 package org.svfrms.util;
 
 public class SensorLimits {
-    private int high;
-    private int low;
+    private final int high;
+    private final int low;
 
     public SensorLimits(int high, int low) {
         this.high = high;

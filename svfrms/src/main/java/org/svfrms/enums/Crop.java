@@ -52,7 +52,7 @@ public enum Crop {
                             SensorType.NUTRIENT, new SensorLimits(40)),
                     Map.of(), Map.of()));
 
-    CropProfile cropProfile;
+    private final CropProfile cropProfile;
 
     Crop(
             CropProfile cropProfile) {

@@ -17,7 +17,7 @@ import org.svfrms.entity.Usage;
 import org.svfrms.service.events.AlertService;
 
 public class ReportService {
-    private static List<String> reports = new ArrayList<>();
+    private static final List<String> reports = new ArrayList<>();
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
 

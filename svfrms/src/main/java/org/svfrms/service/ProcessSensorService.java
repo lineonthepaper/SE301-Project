@@ -20,14 +20,14 @@ import org.svfrms.util.SensorLimits;
 import org.svfrms.util.WaterUsage;
 
 public class ProcessSensorService {
-    private String chamber;
-    private String crop;
+    private final String chamber;
+    private final String crop;
 
-    private ChamberState state;
-    private LoggingService loggingService;
-    private TrackingService trackingService;
-    private AlertService alertService;
-    private ControlQueue controlQueue;
+    private final ChamberState state;
+    private final LoggingService loggingService;
+    private final TrackingService trackingService;
+    private final AlertService alertService;
+    private final ControlQueue controlQueue;
 
     public ProcessSensorService(String chamber, String crop,
             ControlQueue controlQueue) {

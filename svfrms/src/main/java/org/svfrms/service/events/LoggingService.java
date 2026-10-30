@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class LoggingService {
-    private static List<String> sensorLogs = new ArrayList<>();
+    private static final List<String> sensorLogs = new ArrayList<>();
 
     public synchronized void addLog(String message) {
         sensorLogs.add(new Date() + " : " + message);
