@@ -52,9 +52,7 @@ public class ReportService {
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
             reportLines.add("Timestamp: " + new Date());
-            for (String line : getSummaryLines()) {
-                reportLines.add(line);
-            }
+            reportLines.addAll(getSummaryLines());
             reportLines.add("Archived alerts: " + archivedAlerts.size());
             reportLines.add("---");
             reportLines.addAll(reports);
