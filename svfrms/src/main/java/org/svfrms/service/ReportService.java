@@ -20,12 +20,20 @@ public class ReportService {
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
 
+    private static List<String> getSummaryLines() {
+        List<String> summaryLines = new ArrayList<>();
+        summaryLines.add("Generated Alerts: " + AlertService.getTotalAlertsGenerated());
+        summaryLines.add("Active Alerts: " + AlertService.getAlerts().size());
+        summaryLines.add("Water Usage: " + Usage.totalWaterUsage + " L");
+        summaryLines.add("Energy Usage: " + Usage.totalEnergyUsage + " kWh");
+        return summaryLines;
+    }
+
     public static void printDailyReport() {
         System.out.println("===== DAILY REPORT =====");
-        System.out.println("Generated Alerts: " + AlertService.getTotalAlertsGenerated());
-        System.out.println("Active Alerts: " + AlertService.getAlerts().size());
-        System.out.println("Water Usage: " + Usage.totalWaterUsage + " L");
-        System.out.println("Energy Usage: " + Usage.totalEnergyUsage + " kWh");
+        for (String line : getSummaryLines()) {
+            System.out.println(line);
+        }
         reports.add("Daily Report");
     }
 
@@ -43,10 +51,9 @@ public class ReportService {
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
             reportLines.add("Timestamp: " + new Date());
-            reportLines.add("Generated Alerts: " + AlertService.getTotalAlertsGenerated());
-            reportLines.add("Active Alerts: " + AlertService.getAlerts().size());
-            reportLines.add("Water Usage: " + Usage.totalWaterUsage + " L");
-            reportLines.add("Energy Usage: " + Usage.totalEnergyUsage + " kWh");
+            for (String line : getSummaryLines()) {
+                reportLines.add(line);
+            }
             reportLines.add("Archived alerts: " + archivedAlerts.size());
             reportLines.add("---");
             reportLines.addAll(reports);
