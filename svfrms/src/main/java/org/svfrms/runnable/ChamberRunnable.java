@@ -8,24 +8,26 @@ import org.svfrms.service.ProcessSensorService;
 
 public class ChamberRunnable implements Runnable {
     private final ProcessSensorService processSensorService;
+    private final Usage usage;
     private static final Random random = new Random();
 
-    public ChamberRunnable(String chamber, String crop, ControlQueue controlQueue) {
+    public ChamberRunnable(String chamber, String crop, ControlQueue controlQueue, Usage usage) {
         this.processSensorService = new ProcessSensorService(chamber, crop, controlQueue);
+        this.usage = usage;
     }
 
     @Override
     public void run() {
         try {
             for (int i = 0; i < 20; i++) {
-                processSensorService.process(SensorType.TEMPERATURE, random.nextInt(30));
-                processSensorService.process(SensorType.HUMIDITY, random.nextInt(60));
-                processSensorService.process(SensorType.SOIL, random.nextInt(60));
-                processSensorService.process(SensorType.LIGHT, random.nextInt(900));
-                processSensorService.process(SensorType.NUTRIENT, random.nextInt(80));
+                processSensorService.process(SensorType.TEMPERATURE, random.nextInt(30), usage);
+                processSensorService.process(SensorType.HUMIDITY, random.nextInt(60), usage);
+                processSensorService.process(SensorType.SOIL, random.nextInt(60), usage);
+                processSensorService.process(SensorType.LIGHT, random.nextInt(900), usage);
+                processSensorService.process(SensorType.NUTRIENT, random.nextInt(80), usage);
 
-                Usage.recordWaterUsage(2);
-                Usage.recordEnergyUsage(1);
+                usage.recordWaterUsage(2);
+                usage.recordEnergyUsage(1);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

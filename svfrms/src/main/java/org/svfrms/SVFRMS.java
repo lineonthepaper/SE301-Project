@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.svfrms.entity.Usage;
 import org.svfrms.runnable.ChamberRunnable;
 import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.ReportService;
@@ -16,6 +17,10 @@ public class SVFRMS {
     public static void main(String[] args) {
         List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4");
         List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili");
+
+        ReportService reportService = new ReportService();
+        AlertService alertService = new AlertService();
+        Usage usage = new Usage();
 
         ControlQueue controlQueue = new ControlQueue(new ControlService()::applyControl);
         Thread controlQueueThread = new Thread(controlQueue);
@@ -28,7 +33,7 @@ public class SVFRMS {
                 });
                 for (int i = 0; i < chamberList.size(); i++) {
                     ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
-                            controlQueue);
+                            controlQueue, usage);
 
                     exec.submit(chamberRunnable);
                 }
@@ -55,14 +60,14 @@ public class SVFRMS {
         Thread genReport = new Thread(new Runnable() {
             @Override
             public void run() {
-                ReportService.printDailyReport();
+                reportService.printDailyReport(alertService, usage);
             }
         });
 
         Thread archiveAlerts = new Thread(new Runnable() {
             @Override
             public void run() {
-                AlertService.archiveAlerts();
+                alertService.archiveAlerts(reportService);
             }
         });
 
@@ -77,6 +82,6 @@ public class SVFRMS {
         }
 
         System.out.println("System finished sensor processing.");
-        ReportService.saveArchiveReport();
+        reportService.saveArchiveReport(alertService, usage);
     }
 }

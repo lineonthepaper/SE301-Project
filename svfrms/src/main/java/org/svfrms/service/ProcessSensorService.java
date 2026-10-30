@@ -15,9 +15,7 @@ import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
-import org.svfrms.util.EnergyUsage;
 import org.svfrms.util.SensorLimits;
-import org.svfrms.util.WaterUsage;
 
 public class ProcessSensorService {
     private final String chamber;
@@ -49,21 +47,7 @@ public class ProcessSensorService {
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
-    private void recordUsage(CropProfile cropProfile, SensorType sensor, Breach breach) {
-        EnergyUsage energyUsage = cropProfile.energyUsageMap().get(sensor);
-        if (energyUsage != null) {
-            Usage.recordEnergyUsage(breach == Breach.HIGH ? energyUsage.getHighBreachUsage()
-                    : energyUsage.getLowBreachUsage());
-        }
-
-        WaterUsage waterUsage = cropProfile.waterUsageMap().get(sensor);
-        if (waterUsage != null) {
-            Usage.recordWaterUsage(breach == Breach.HIGH ? waterUsage.getHighBreachUsage()
-                    : waterUsage.getLowBreachUsage());
-        }
-    }
-
-    public synchronized void process(SensorType sensor, double value) throws InterruptedException {
+    public synchronized void process(SensorType sensor, double value, Usage usage) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
@@ -93,6 +77,6 @@ public class ProcessSensorService {
         trackingService.trackAlert(chamber, message);
         alertService.addAlert(chamber, crop, message);
 
-        recordUsage(cropProfile, sensor, breach);
+        usage.recordBreachUsage(cropProfile, sensor, breach);
     }
 }

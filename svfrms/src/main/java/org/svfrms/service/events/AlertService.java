@@ -15,11 +15,11 @@ public class AlertService {
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
-    public synchronized static List<String> getAlerts() {
+    public synchronized List<String> getAlerts() {
         return new ArrayList<>(alerts);
     }
 
-    public synchronized static void archiveAlerts() {
+    public synchronized void archiveAlerts(ReportService reportService) {
         ArrayList<String> toArchive = new ArrayList<>();
         if (!alerts.isEmpty()) {
             toArchive.addAll(alerts);
@@ -28,23 +28,23 @@ public class AlertService {
 
         if (!toArchive.isEmpty()) {
             archivedAlerts.addAll(toArchive);
-            ReportService.addReport("Archived " + toArchive.size() + " alerts");
+            reportService.addReport("Archived " + toArchive.size() + " alerts");
             System.out.println("Archiving alerts... " + toArchive.size() + " moved to archive.");
         } else {
-            ReportService.addReport("No alerts to archive");
+            reportService.addReport("No alerts to archive");
             System.out.println("Archiving alerts... no active alerts to archive.");
         }
     }
 
-    public synchronized static List<String> getArchivedAlerts() {
+    public synchronized List<String> getArchivedAlerts() {
         return new ArrayList<>(archivedAlerts);
     }
 
-    public synchronized static int getTotalAlertsGenerated() {
+    public synchronized int getTotalAlertsGenerated() {
         return archivedAlerts.size() + alerts.size();
     }
 
-    public static void showAlerts() {
+    public void showAlerts() {
         for (String a : alerts) {
             System.out.println(a);
         }

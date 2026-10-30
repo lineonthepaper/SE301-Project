@@ -21,38 +21,38 @@ public class ReportService {
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
 
-    private static List<String> getSummaryLines() {
+    private List<String> getSummaryLines(AlertService alertService, Usage usage) {
         List<String> summaryLines = new ArrayList<>();
-        summaryLines.add("Generated Alerts: " + AlertService.getTotalAlertsGenerated());
-        summaryLines.add("Active Alerts: " + AlertService.getAlerts().size());
-        summaryLines.add("Water Usage: " + Usage.getTotalWaterUsage() + " L");
-        summaryLines.add("Energy Usage: " + Usage.getTotalEnergyUsage() + " kWh");
+        summaryLines.add("Generated Alerts: " + alertService.getTotalAlertsGenerated());
+        summaryLines.add("Active Alerts: " + alertService.getAlerts().size());
+        summaryLines.add("Water Usage: " + usage.getTotalWaterUsage() + " L");
+        summaryLines.add("Energy Usage: " + usage.getTotalEnergyUsage() + " kWh");
         return summaryLines;
     }
 
-    public static void printDailyReport() {
+    public void printDailyReport(AlertService alertService, Usage usage) {
         System.out.println("===== DAILY REPORT =====");
-        for (String line : getSummaryLines()) {
+        for (String line : getSummaryLines(alertService, usage)) {
             System.out.println(line);
         }
         reports.add("Daily Report");
     }
 
-    public static void addReport(String report) {
+    public void addReport(String report) {
         reports.add(report);
     }
 
-    public static void saveArchiveReport() {
+    public void saveArchiveReport(AlertService alertService, Usage usage) {
         try {
             Files.createDirectories(ARCHIVE_DIR);
 
-            List<String> archivedAlerts = AlertService.getArchivedAlerts();
+            List<String> archivedAlerts = alertService.getArchivedAlerts();
             SortedMap<String, ChamberSummary> chamberSummaries = ChamberRegistry.getSummariesByChamber();
 
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
             reportLines.add("Timestamp: " + new Date());
-            reportLines.addAll(getSummaryLines());
+            reportLines.addAll(getSummaryLines(alertService, usage));
             reportLines.add("Archived alerts: " + archivedAlerts.size());
             reportLines.add("---");
             reportLines.addAll(reports);
