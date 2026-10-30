@@ -10,8 +10,6 @@ public class AlertService {
     private String crop;
 
     private static List<String> alerts = new ArrayList<>();
-    private static int totalAlerts = 0;
-    private static int totalAlertsGenerated = 0;
     private static List<String> archivedAlerts = new ArrayList<>();
 
     public AlertService(String chamber, String crop) {
@@ -21,25 +19,15 @@ public class AlertService {
 
     public void addAlert(String message) {
         alerts.add(message);
-        totalAlerts++;
-        totalAlertsGenerated++;
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
-    }
-
-    public List<String> getAlerts() {
-        return new ArrayList<>(alerts);
     }
 
     public void printAlertLog(String message) {
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
-    public static int getTotalAlerts() {
-        return totalAlerts;
-    }
-
-    public static int getTotalAlertsGenerated() {
-        return totalAlertsGenerated;
+    public static List<String> getAlerts() {
+        return new ArrayList<>(alerts);
     }
 
     public static void archiveAlerts() {
@@ -47,7 +35,6 @@ public class AlertService {
         if (!alerts.isEmpty()) {
             toArchive.addAll(alerts);
             alerts.clear();
-            totalAlerts = 0;
         }
 
         if (!toArchive.isEmpty()) {
@@ -62,6 +49,10 @@ public class AlertService {
 
     public static List<String> getArchivedAlerts() {
         return new ArrayList<>(archivedAlerts);
+    }
+
+    public static int getTotalAlertsGenerated() {
+        return archivedAlerts.size() + alerts.size();
     }
 
     public static void showAlerts() {
