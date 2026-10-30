@@ -10,16 +10,16 @@ public class AlertService {
     private static List<String> alerts = new ArrayList<>();
     private static List<String> archivedAlerts = new ArrayList<>();
 
-    public void addAlert(String chamber, String crop, String message) {
+    public synchronized void addAlert(String chamber, String crop, String message) {
         alerts.add(message);
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
-    public static List<String> getAlerts() {
+    public synchronized static List<String> getAlerts() {
         return new ArrayList<>(alerts);
     }
 
-    public static void archiveAlerts() {
+    public synchronized static void archiveAlerts() {
         ArrayList<String> toArchive = new ArrayList<>();
         if (!alerts.isEmpty()) {
             toArchive.addAll(alerts);
@@ -36,11 +36,11 @@ public class AlertService {
         }
     }
 
-    public static List<String> getArchivedAlerts() {
+    public synchronized static List<String> getArchivedAlerts() {
         return new ArrayList<>(archivedAlerts);
     }
 
-    public static int getTotalAlertsGenerated() {
+    public synchronized static int getTotalAlertsGenerated() {
         return archivedAlerts.size() + alerts.size();
     }
 

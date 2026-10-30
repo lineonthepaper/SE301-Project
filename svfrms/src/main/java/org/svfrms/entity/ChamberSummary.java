@@ -6,29 +6,29 @@ public class ChamberSummary {
     private String lastAction = "No action";
     private String lastAlert = "None";
 
-    public int getAlerts() {
+    public synchronized int getAlerts() {
         return this.alerts;
     }
 
-    public int getMitigationActions() {
+    public synchronized int getMitigationActions() {
         return this.mitigationActions;
     }
 
-    public void recordAlert(String lastAlert) {
+    public synchronized void recordAlert(String lastAlert) {
         this.alerts++;
         this.lastAlert = lastAlert;
     }
 
-    public void recordMitigationAction(String lastAction) {
+    public synchronized void recordMitigationAction(String lastAction) {
         this.mitigationActions++;
         this.lastAction = lastAction;
     }
 
-    public String getLastAction() {
+    public synchronized String getLastAction() {
         return this.lastAction;
     }
 
-    public String getLastAlert() {
+    public synchronized String getLastAlert() {
         return this.lastAlert;
     }
 }

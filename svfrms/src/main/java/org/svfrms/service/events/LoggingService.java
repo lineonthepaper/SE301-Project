@@ -7,11 +7,11 @@ import java.util.List;
 public class LoggingService {
     private static List<String> sensorLogs = new ArrayList<>();
 
-    public void addLog(String message) {
+    public synchronized void addLog(String message) {
         sensorLogs.add(new Date() + " : " + message);
     }
 
-    public List<String> getLogs() {
+    public synchronized List<String> getLogs() {
         return new ArrayList<>(sensorLogs);
     }
 
