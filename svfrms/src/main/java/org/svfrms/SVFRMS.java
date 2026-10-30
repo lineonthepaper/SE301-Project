@@ -27,7 +27,6 @@ public class SVFRMS {
                     return null;
                 });
                 for (int i = 0; i < chamberList.size(); i++) {
-                    System.out.println("submitting " + i);
                     ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
                             controlQueue);
 
