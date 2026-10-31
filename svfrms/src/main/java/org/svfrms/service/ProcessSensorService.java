@@ -2,6 +2,7 @@ package org.svfrms.service;
 
 import java.util.Map;
 
+import org.svfrms.entity.Chamber;
 import org.svfrms.entity.ChamberState;
 import org.svfrms.entity.CropProfile;
 import org.svfrms.enums.Breach;
@@ -16,7 +17,7 @@ import org.svfrms.util.SensorLimits;
 
 public class ProcessSensorService {
     private final String chamber;
-    private final String crop;
+    private final Crop crop;
     private final ControlRequester controlRequester;
 
     private final ChamberState state;
@@ -24,10 +25,10 @@ public class ProcessSensorService {
     private final AlertSink alertSink;
     private final UsageRecorder usageRecorder;
 
-    public ProcessSensorService(String chamber, String crop, ChamberState state,
+    public ProcessSensorService(Chamber chamber, ChamberState state,
             ControlRequester controlRequester, SensorLog sensorLog, AlertSink alertSink, UsageRecorder usageRecorder) {
-        this.chamber = chamber;
-        this.crop = crop;
+        this.chamber = chamber.name();
+        this.crop = chamber.crop();
         this.controlRequester = controlRequester;
 
         this.state = state;
@@ -37,11 +38,11 @@ public class ProcessSensorService {
     }
 
     private void printProcessSensorLog(String sensor, double value) {
-        sensorLog.addLog("Processing " + crop + " " + sensor + " = " + value);
+        sensorLog.addLog("Processing " + crop.getLabel() + " " + sensor + " = " + value);
     }
 
     private String alertMessage(SensorType sensor, Breach breach) {
-        String subject = sensor.isCropSpecific() ? chamber + " " + crop : chamber;
+        String subject = sensor.isCropSpecific() ? chamber + " " + crop.getLabel() : chamber;
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
@@ -49,7 +50,7 @@ public class ProcessSensorService {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
-        Crop cropEnum = sensor.isCropSpecific() ? Crop.valueOf(crop.toUpperCase().replace(' ', '_')) : Crop.DEFAULT;
+        Crop cropEnum = sensor.isCropSpecific() ? crop : Crop.DEFAULT;
         CropProfile cropProfile = cropEnum.getCropProfile();
         Map<SensorType, SensorLimits> limitsMap = cropProfile.limits();
 
@@ -65,7 +66,7 @@ public class ProcessSensorService {
         }
 
         String message = alertMessage(sensor, breach);
-        alertSink.addAlert(chamber, crop, message);
+        alertSink.addAlert(chamber, crop.getLabel(), message);
 
         usageRecorder.recordBreachUsage(cropProfile, sensor, breach);
 
