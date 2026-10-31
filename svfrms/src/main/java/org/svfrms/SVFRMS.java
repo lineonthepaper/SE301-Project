@@ -19,7 +19,7 @@ public class SVFRMS {
         List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4", "CH5");
         List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili", "Kale");
 
-        ReportService reportService = ReportService.getInstance();
+        ReportService reportService = new ReportService();
         AlertService alertService = AlertService.getInstance();
         LoggingService loggingService = LoggingService.getInstance();
         TrackingService trackingService = TrackingService.getInstance();
