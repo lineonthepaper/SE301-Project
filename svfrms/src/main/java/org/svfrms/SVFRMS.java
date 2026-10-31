@@ -55,11 +55,11 @@ public class SVFRMS {
         });
 
         archiveAlerts.start();
-        genReport.start();
 
         try {
-            genReport.join();
             archiveAlerts.join();
+            genReport.start();
+            genReport.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
