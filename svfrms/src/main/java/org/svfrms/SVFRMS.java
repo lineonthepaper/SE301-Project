@@ -23,7 +23,7 @@ public class SVFRMS {
         AlertService alertService = AlertService.getInstance();
         LoggingService loggingService = LoggingService.getInstance();
         TrackingService trackingService = TrackingService.getInstance();
-        Usage usage = Usage.getInstance();
+        Usage usage = new Usage();
 
         ControlQueue controlQueue = new ControlQueue();
         ControlService controlService = new ControlService(trackingService, loggingService, controlQueue);
