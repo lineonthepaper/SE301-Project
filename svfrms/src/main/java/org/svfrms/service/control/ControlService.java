@@ -3,7 +3,6 @@ package org.svfrms.service.control;
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
 import org.svfrms.enums.Control;
-import org.svfrms.request.ControlRequest;
 import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;

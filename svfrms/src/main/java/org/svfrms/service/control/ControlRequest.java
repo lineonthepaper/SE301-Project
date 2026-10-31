@@ -1,7 +1,7 @@
-package org.svfrms.request;
+package org.svfrms.service.control;
 
 import org.svfrms.enums.Control;
-import org.svfrms.service.control.ControlService;
+import org.svfrms.request.Command;
 
 public record ControlRequest(String chamber, Control control, ControlService controlService) implements Command {
     @Override
