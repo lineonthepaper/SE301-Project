@@ -15,7 +15,9 @@ public enum Crop {
                             SensorType.HUMIDITY, new SensorLimits(80, 60),
                             SensorType.SOIL, new SensorLimits(45)),
                     Map.of(SensorType.TEMPERATURE, new EnergyUsage(10, 15)),
-                    Map.of(SensorType.HUMIDITY, new WaterUsage(0, 20)))),
+                    Map.of(
+                            SensorType.HUMIDITY, new WaterUsage(0, 20),
+                            SensorType.SOIL, new WaterUsage(0, 50)))),
     STRAWBERRY(
             new CropProfile(
                     Map.of(
