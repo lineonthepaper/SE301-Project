@@ -41,7 +41,7 @@ public class LoggingService {
         try {
             return new ArrayList<>(sensorLogs);
         } finally {
-            loggingReadLock.lock();
+            loggingReadLock.unlock();
         }
     }
 
