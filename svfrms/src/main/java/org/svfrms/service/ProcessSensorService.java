@@ -10,8 +10,6 @@ import org.svfrms.enums.Breach;
 import org.svfrms.enums.Control;
 import org.svfrms.enums.Crop;
 import org.svfrms.enums.SensorType;
-import org.svfrms.request.ControlRequest;
-import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
@@ -21,7 +19,6 @@ import org.svfrms.util.SensorLimits;
 public class ProcessSensorService {
     private final String chamber;
     private final String crop;
-    private final ControlQueue controlQueue;
     private final ControlService controlService;
 
     private final ChamberState state;
@@ -29,11 +26,10 @@ public class ProcessSensorService {
     private final TrackingService trackingService;
     private final AlertService alertService;
 
-    public ProcessSensorService(String chamber, String crop, ControlQueue controlQueue,
-            ControlService controlService, LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
+    public ProcessSensorService(String chamber, String crop, ControlService controlService,
+            LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
         this.chamber = chamber;
         this.crop = crop;
-        this.controlQueue = controlQueue;
         this.controlService = controlService;
 
         this.state = ChamberRegistry.getState(chamber);
@@ -79,7 +75,7 @@ public class ProcessSensorService {
         Control control = sensor.getControlToUse(breach);
 
         if (control != null) {
-            controlQueue.addCommand(new ControlRequest(chamber, control, controlService));
+            controlService.requestControl(chamber, control);
         }
     }
 }

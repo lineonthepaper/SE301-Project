@@ -25,16 +25,15 @@ public class SVFRMS {
         TrackingService trackingService = TrackingService.getInstance();
         Usage usage = Usage.getInstance();
 
-        ControlService controlService = new ControlService(trackingService, loggingService);
         ControlQueue controlQueue = new ControlQueue();
+        ControlService controlService = new ControlService(trackingService, loggingService, controlQueue);
         Thread controlQueueThread = new Thread(controlQueue);
         controlQueueThread.start();
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size())) {
             for (int i = 0; i < chamberList.size(); i++) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
-                        cropList.get(i), controlQueue, controlService, loggingService, trackingService,
-                        alertService);
+                        cropList.get(i), controlService, loggingService, trackingService, alertService);
 
                 exec.execute(new ChamberRunnable(processSensorService, usage));
             }
