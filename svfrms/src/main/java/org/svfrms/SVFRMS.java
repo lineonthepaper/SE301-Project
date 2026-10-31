@@ -49,8 +49,13 @@ public class SVFRMS {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamber,
                         chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
                 chamberCallableList.add(
-                        Executors.callable(
-                                new ChamberRunnable(processSensorService, usage, random)));
+                        new Callable<Void>() {
+                            @Override
+                            public Void call() {
+                                (new ChamberRunnable(processSensorService, usage, random)).run();
+                                return null;
+                            }
+                        });
             }
             try {
                 exec.invokeAll(chamberCallableList);
