@@ -2,7 +2,7 @@ package org.svfrms.service.control;
 
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
-import org.svfrms.request.ControlRequest;
+import org.svfrms.enums.Control;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
 
@@ -15,13 +15,13 @@ public class ControlService {
         this.loggingService = loggingService;
     }
 
-    public void applyControl(ControlRequest controlRequest) {
-        ChamberState state = ChamberRegistry.getState(controlRequest.chamber());
-        String result = controlRequest.control().apply(state);
-        String activated = controlRequest.control().getLabel() + " Activated";
-        trackingService.trackAction(controlRequest.chamber(), activated);
-        loggingService.printControlLog(controlRequest.chamber(), activated);
-        loggingService.printControlLog(controlRequest.chamber(), result);
+    public void applyControl(String chamber, Control control) {
+        ChamberState state = ChamberRegistry.getState(chamber);
+        String result = control.apply(state);
+        String activated = control.getLabel() + " Activated";
+        trackingService.trackAction(chamber, activated);
+        loggingService.printControlLog(chamber, activated);
+        loggingService.printControlLog(chamber, result);
     }
 
 }
