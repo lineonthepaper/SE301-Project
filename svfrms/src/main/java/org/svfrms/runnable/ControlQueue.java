@@ -19,6 +19,10 @@ public class ControlQueue implements Runnable {
         queue.put(STOP);
     }
 
+    public BlockingQueue<Command> getQueue() {
+        return queue;
+    }
+
     @Override
     public void run() {
         try {
