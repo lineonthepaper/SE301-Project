@@ -52,7 +52,7 @@ public class ProcessSensorService {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
-        Crop cropEnum = sensor.isCropSpecific() ? Crop.valueOf(crop.toUpperCase()) : Crop.DEFAULT;
+        Crop cropEnum = sensor.isCropSpecific() ? Crop.valueOf(crop.toUpperCase().replace(' ', '_')) : Crop.DEFAULT;
         CropProfile cropProfile = cropEnum.getCropProfile();
         Map<SensorType, SensorLimits> limitsMap = cropProfile.limits();
 
