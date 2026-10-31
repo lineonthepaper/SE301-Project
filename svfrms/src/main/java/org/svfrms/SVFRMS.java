@@ -55,7 +55,7 @@ public class SVFRMS {
             e.printStackTrace();
         }
 
-        alertService.archiveAlerts(reportService);
+        reportService.addReport(alertService.archiveAlerts());
         reportService.printDailyReport(alertService, usage);
 
         System.out.println("System finished sensor processing.");

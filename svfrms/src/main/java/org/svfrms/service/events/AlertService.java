@@ -7,7 +7,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import org.svfrms.port.AlertSink;
-import org.svfrms.service.ReportService;
 
 public class AlertService implements AlertSink {
 
@@ -45,7 +44,7 @@ public class AlertService implements AlertSink {
         }
     }
 
-    public synchronized void archiveAlerts(ReportService reportService) {
+    public synchronized String archiveAlerts() {
         alertWriteLock.lock();
         try {
             ArrayList<String> toArchive = new ArrayList<>();
@@ -55,12 +54,11 @@ public class AlertService implements AlertSink {
             }
             if (!toArchive.isEmpty()) {
                 archivedAlerts.addAll(toArchive);
-                reportService.addReport("Archived " + toArchive.size() + " alerts");
                 System.out.println("Archiving alerts... " + toArchive.size() + " moved to archive.");
-            } else {
-                reportService.addReport("No alerts to archive");
-                System.out.println("Archiving alerts... no active alerts to archive.");
+                return "Archived " + toArchive.size() + " alerts";
             }
+            System.out.println("Archiving alerts... no active alerts to archive.");
+            return "No alerts to archive";
         } finally {
             alertWriteLock.unlock();
         }
