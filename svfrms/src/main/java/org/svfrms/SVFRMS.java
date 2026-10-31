@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import org.svfrms.entity.Usage;
 import org.svfrms.runnable.ChamberRunnable;
 import org.svfrms.runnable.ControlQueue;
+import org.svfrms.service.ProcessSensorService;
 import org.svfrms.service.ReportService;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
@@ -31,10 +32,10 @@ public class SVFRMS {
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size())) {
             for (int i = 0; i < chamberList.size(); i++) {
-                ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
-                        controlQueue, usage);
+                ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
+                        cropList.get(i), controlQueue, loggingService, trackingService, alertService);
 
-                exec.execute(chamberRunnable);
+                exec.execute(new ChamberRunnable(processSensorService, usage));
             }
         }
 

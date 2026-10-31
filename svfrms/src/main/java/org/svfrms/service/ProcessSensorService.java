@@ -27,16 +27,16 @@ public class ProcessSensorService {
     private final TrackingService trackingService;
     private final AlertService alertService;
 
-    public ProcessSensorService(String chamber, String crop,
-            ControlQueue controlQueue) {
+    public ProcessSensorService(String chamber, String crop, ControlQueue controlQueue,
+            LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
         this.chamber = chamber;
         this.crop = crop;
         this.controlQueue = controlQueue;
 
         this.state = ChamberRegistry.getState(chamber);
-        this.loggingService = LoggingService.getInstance();
-        this.trackingService = TrackingService.getInstance();
-        this.alertService = AlertService.getInstance();
+        this.loggingService = loggingService;
+        this.trackingService = trackingService;
+        this.alertService = alertService;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
