@@ -69,10 +69,9 @@ public class ProcessSensorService {
 
         Control control = sensor.getControlToUse(breach);
 
-        if (control == null) {
-            return;
+        if (control != null) {
+            controlQueue.addControlRequest(new ControlRequest(chamber, control));
         }
-        controlQueue.addControlRequest(new ControlRequest(chamber, control));
 
         String message = alertMessage(sensor, breach);
         trackingService.trackAlert(chamber, message);
