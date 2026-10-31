@@ -1,6 +1,7 @@
 package org.svfrms;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,6 +33,7 @@ public class SVFRMS {
         LoggingService loggingService = new LoggingService();
         TrackingService trackingService = new TrackingService(chamberRegistry);
         AlertService alertService = new AlertService(trackingService);
+        Random random = new Random();
 
         ControlQueue controlQueue = new ControlQueue();
         ControlService controlService = new ControlService(chamberRegistry, trackingService, loggingService,
@@ -44,7 +46,7 @@ public class SVFRMS {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamber,
                         chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
 
-                exec.execute(new ChamberRunnable(processSensorService, usage));
+                exec.execute(new ChamberRunnable(processSensorService, usage, random));
             }
         }
 

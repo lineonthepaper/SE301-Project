@@ -9,11 +9,12 @@ import org.svfrms.service.ProcessSensorService;
 public class ChamberRunnable implements Runnable {
     private final ProcessSensorService processSensorService;
     private final Usage usage;
-    private static final Random random = new Random();
+    private final Random random;
 
-    public ChamberRunnable(ProcessSensorService processSensorService, Usage usage) {
+    public ChamberRunnable(ProcessSensorService processSensorService, Usage usage, Random random) {
         this.processSensorService = processSensorService;
         this.usage = usage;
+        this.random = random;
     }
 
     @Override
