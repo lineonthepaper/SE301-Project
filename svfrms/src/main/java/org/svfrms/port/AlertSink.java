@@ -1,5 +1,7 @@
 package org.svfrms.port;
 
+import org.svfrms.entity.Chamber;
+
 public interface AlertSink {
-    void addAlert(String chamber, String crop, String message);
+    void addAlert(Chamber chamber, String message);
 }

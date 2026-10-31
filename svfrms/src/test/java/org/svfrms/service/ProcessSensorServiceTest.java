@@ -42,7 +42,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.TEMPERATURE, 28);
         assertEquals(alertService.getAlerts().size(), 0);
@@ -56,7 +56,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.TEMPERATURE, 29);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -70,7 +70,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.TEMPERATURE, 21);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -84,7 +84,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.SOIL, 44);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -98,7 +98,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.SOIL, 45);
         assertEquals(alertService.getAlerts().size(), 0);
@@ -112,7 +112,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.STRAWBERRY);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.HUMIDITY, 69);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -126,7 +126,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.STRAWBERRY);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.HUMIDITY, 70);
         assertEquals(alertService.getAlerts().size(), 0);
@@ -140,7 +140,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.CUCUMBER);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.LIGHT, 500);
         assertEquals(alertService.getAlerts().size(), 0);
@@ -154,7 +154,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.CUCUMBER);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.LIGHT, 499);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -168,7 +168,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.CHILI);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.NUTRIENT, 39);
         assertEquals(alertService.getAlerts().size(), 1);
@@ -182,7 +182,7 @@ public class ProcessSensorServiceTest {
         Chamber chamber = new Chamber("CH1", Crop.CHILI);
 
         ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
         processSensorService.process(SensorType.NUTRIENT, 40);
         assertEquals(alertService.getAlerts().size(), 0);

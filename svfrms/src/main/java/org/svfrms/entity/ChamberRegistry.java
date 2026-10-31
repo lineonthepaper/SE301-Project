@@ -9,12 +9,12 @@ public final class ChamberRegistry {
     private final Map<String, ChamberState> states = new ConcurrentHashMap<>();
     private final Map<String, ChamberSummary> summaries = new ConcurrentHashMap<>();
 
-    public ChamberState getState(String chamber) {
-        return states.computeIfAbsent(chamber, c -> new ChamberState());
+    public ChamberState getState(Chamber chamber) {
+        return states.computeIfAbsent(chamber.name(), c -> new ChamberState());
     }
 
-    public ChamberSummary getSummary(String chamber) {
-        return summaries.computeIfAbsent(chamber, c -> new ChamberSummary());
+    public ChamberSummary getSummary(Chamber chamber) {
+        return summaries.computeIfAbsent(chamber.name(), c -> new ChamberSummary());
     }
 
     public SortedMap<String, ChamberSummary> getSummariesByChamber() {

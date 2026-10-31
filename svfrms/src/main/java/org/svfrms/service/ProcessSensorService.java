@@ -16,8 +16,7 @@ import org.svfrms.port.UsageRecorder;
 import org.svfrms.util.SensorLimits;
 
 public class ProcessSensorService {
-    private final String chamber;
-    private final Crop crop;
+    private final Chamber chamber;
     private final ControlRequester controlRequester;
 
     private final ChamberState state;
@@ -27,8 +26,7 @@ public class ProcessSensorService {
 
     public ProcessSensorService(Chamber chamber, ChamberState state,
             ControlRequester controlRequester, SensorLog sensorLog, AlertSink alertSink, UsageRecorder usageRecorder) {
-        this.chamber = chamber.name();
-        this.crop = chamber.crop();
+        this.chamber = chamber;
         this.controlRequester = controlRequester;
 
         this.state = state;
@@ -38,11 +36,11 @@ public class ProcessSensorService {
     }
 
     private void printProcessSensorLog(String sensor, double value) {
-        sensorLog.addLog("Processing " + crop.getLabel() + " " + sensor + " = " + value);
+        sensorLog.addLog("Processing " + chamber.crop().getLabel() + " " + sensor + " = " + value);
     }
 
     private String alertMessage(SensorType sensor, Breach breach) {
-        String subject = sensor.isCropSpecific() ? chamber + " " + crop.getLabel() : chamber;
+        String subject = sensor.isCropSpecific() ? chamber.name() + " " + chamber.crop().getLabel() : chamber.name();
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
@@ -50,7 +48,7 @@ public class ProcessSensorService {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
-        Crop cropEnum = sensor.isCropSpecific() ? crop : Crop.DEFAULT;
+        Crop cropEnum = sensor.isCropSpecific() ? chamber.crop() : Crop.DEFAULT;
         CropProfile cropProfile = cropEnum.getCropProfile();
         Map<SensorType, SensorLimits> limitsMap = cropProfile.limits();
 
@@ -66,7 +64,7 @@ public class ProcessSensorService {
         }
 
         String message = alertMessage(sensor, breach);
-        alertSink.addAlert(chamber, crop.getLabel(), message);
+        alertSink.addAlert(chamber, message);
 
         usageRecorder.recordBreachUsage(cropProfile, sensor, breach);
 

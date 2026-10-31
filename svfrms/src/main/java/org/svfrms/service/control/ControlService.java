@@ -1,5 +1,6 @@
 package org.svfrms.service.control;
 
+import org.svfrms.entity.Chamber;
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
 import org.svfrms.enums.Control;
@@ -23,11 +24,11 @@ public class ControlService implements ControlRequester {
     }
 
     @Override
-    public void requestControl(String chamber, Control control) throws InterruptedException {
+    public void requestControl(Chamber chamber, Control control) throws InterruptedException {
         controlQueue.addCommand(new ControlRequest(chamber, control, this));
     }
 
-    public void applyControl(String chamber, Control control) {
+    public void applyControl(Chamber chamber, Control control) {
         ChamberState state = chamberRegistry.getState(chamber);
         String result = control.apply(state);
         String activated = control.getLabel() + " Activated";

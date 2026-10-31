@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import org.svfrms.entity.Chamber;
 import org.svfrms.port.AlertSink;
 
 public class AlertService implements AlertSink {
@@ -24,7 +25,7 @@ public class AlertService implements AlertSink {
     }
 
     @Override
-    public void addAlert(String chamber, String crop, String message) {
+    public void addAlert(Chamber chamber, String message) {
         trackingService.trackAlert(chamber, message);
         alertWriteLock.lock();
         try {
@@ -32,7 +33,7 @@ public class AlertService implements AlertSink {
         } finally {
             alertWriteLock.unlock();
         }
-        System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
+        System.out.println("[" + chamber.name() + "][" + chamber.crop().getLabel() + "][ALERT] " + message);
     }
 
     public List<String> getAlerts() {

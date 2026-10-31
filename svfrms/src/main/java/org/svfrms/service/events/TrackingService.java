@@ -1,5 +1,6 @@
 package org.svfrms.service.events;
 
+import org.svfrms.entity.Chamber;
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberSummary;
 
@@ -10,12 +11,12 @@ public class TrackingService {
         this.chamberRegistry = chamberRegistry;
     }
 
-    public void trackAlert(String chamber, String message) {
+    public void trackAlert(Chamber chamber, String message) {
         ChamberSummary summary = chamberRegistry.getSummary(chamber);
         summary.recordAlert(message);
     }
 
-    public void trackAction(String chamber, String message) {
+    public void trackAction(Chamber chamber, String message) {
         ChamberSummary summary = chamberRegistry.getSummary(chamber);
         summary.recordMitigationAction(message);
     }

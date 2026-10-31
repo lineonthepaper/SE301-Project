@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.svfrms.enums.Crop;
 
 public class ChamberRegistryTest {
     ChamberRegistry chamberRegistry;
@@ -26,10 +27,11 @@ public class ChamberRegistryTest {
         CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
         ExecutorService exec = Executors.newFixedThreadPool(THREAD_COUNT);
         List<ChamberState> chamberStateList = Collections.synchronizedList(new ArrayList<>());
+        Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         for (int i = 0; i < THREAD_COUNT; i++) {
             exec.submit(() -> {
-                chamberStateList.add(chamberRegistry.getState("CH1"));
+                chamberStateList.add(chamberRegistry.getState(chamber));
                 latch.countDown();
             });
         }
@@ -49,10 +51,11 @@ public class ChamberRegistryTest {
         CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
         ExecutorService exec = Executors.newFixedThreadPool(THREAD_COUNT);
         List<ChamberSummary> chamberSummaryList = Collections.synchronizedList(new ArrayList<>());
+        Chamber chamber = new Chamber("CH1", Crop.TOMATO);
 
         for (int i = 0; i < THREAD_COUNT; i++) {
             exec.submit(() -> {
-                chamberSummaryList.add(chamberRegistry.getSummary("CH1"));
+                chamberSummaryList.add(chamberRegistry.getSummary(chamber));
                 latch.countDown();
             });
         }

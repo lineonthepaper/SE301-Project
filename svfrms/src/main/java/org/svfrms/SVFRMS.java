@@ -44,7 +44,7 @@ public class SVFRMS {
         try (ExecutorService exec = Executors.newFixedThreadPool(chambers.size())) {
             for (Chamber chamber : chambers) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamber,
-                        chamberRegistry.getState(chamber.name()), controlService, loggingService, alertService, usage);
+                        chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
 
                 exec.execute(new ChamberRunnable(processSensorService, usage, random));
             }

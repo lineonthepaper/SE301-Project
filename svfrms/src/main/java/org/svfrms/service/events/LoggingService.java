@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import org.svfrms.entity.Chamber;
 import org.svfrms.port.SensorLog;
 
 public class LoggingService implements SensorLog {
@@ -35,8 +36,8 @@ public class LoggingService implements SensorLog {
         }
     }
 
-    public void printControlLog(String chamber, String message) {
-        System.out.println("\t\u001B[32m[" + chamber + "][CONTROL] " + message + "\u001B[0m");
+    public void printControlLog(Chamber chamber, String message) {
+        System.out.println("\t\u001B[32m[" + chamber.name() + "][CONTROL] " + message + "\u001B[0m");
     }
 
     public void showLogs() {
