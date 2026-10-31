@@ -56,7 +56,7 @@ public class SVFRMS {
                 exec.invokeAll(chamberCallableList);
             } catch (InterruptedException e) {
                 System.out.println("Thread was interrupted before completing its task.");
-                System.exit(0);
+                System.exit(1);
             }
         }
 
