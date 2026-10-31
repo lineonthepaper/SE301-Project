@@ -67,16 +67,16 @@ public class ProcessSensorService {
             return;
         }
 
-        Control control = sensor.getControlToUse(breach);
-
-        if (control != null) {
-            controlQueue.addControlRequest(new ControlRequest(chamber, control));
-        }
-
         String message = alertMessage(sensor, breach);
         trackingService.trackAlert(chamber, message);
         alertService.addAlert(chamber, crop, message);
 
         usage.recordBreachUsage(cropProfile, sensor, breach);
+
+        Control control = sensor.getControlToUse(breach);
+
+        if (control != null) {
+            controlQueue.addControlRequest(new ControlRequest(chamber, control));
+        }
     }
 }
