@@ -1,8 +1,6 @@
 package org.svfrms;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,34 +22,19 @@ public class SVFRMS {
 
         ControlQueue controlQueue = new ControlQueue(new ControlService()::applyControl);
         Thread controlQueueThread = new Thread(controlQueue);
-        try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size() + 1)) {
-            ExecutorCompletionService<Void> completed = new ExecutorCompletionService<>(exec);
-            try {
-                completed.submit(() -> {
-                    controlQueueThread.start();
-                    return null;
-                });
-                for (int i = 0; i < chamberList.size(); i++) {
-                    ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
-                            controlQueue, usage);
+        controlQueueThread.start();
 
-                    exec.submit(chamberRunnable);
-                }
+        try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size())) {
+            for (int i = 0; i < chamberList.size(); i++) {
+                ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
+                        controlQueue, usage);
 
-                completed.submit(() -> {
-                    controlQueue.shutdown();
-                    return null;
-                });
-                completed.take().get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } finally {
-                exec.shutdownNow();
+                exec.execute(chamberRunnable);
             }
         }
+
         try {
+            controlQueue.shutdown();
             controlQueueThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
