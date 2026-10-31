@@ -18,22 +18,9 @@ import org.svfrms.entity.Usage;
 import org.svfrms.service.events.AlertService;
 
 public class ReportService {
-    private static final List<String> reports = Collections.synchronizedList(new ArrayList<>());
+    private final List<String> reports = Collections.synchronizedList(new ArrayList<>());
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
-
-    private static ReportService instance = null;
-
-    private ReportService() {
-        // empty constructor
-    }
-
-    public static synchronized ReportService getInstance() {
-        if (instance == null) {
-            instance = new ReportService();
-        }
-        return instance;
-    }
 
     private List<String> getSummaryLines(AlertService alertService, Usage usage) {
         List<String> summaryLines = new ArrayList<>();

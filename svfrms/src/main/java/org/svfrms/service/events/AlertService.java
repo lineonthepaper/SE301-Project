@@ -10,25 +10,12 @@ import org.svfrms.service.ReportService;
 
 public class AlertService {
 
-    private static final List<String> alerts = new ArrayList<>();
-    private static final List<String> archivedAlerts = new ArrayList<>();
+    private final List<String> alerts = new ArrayList<>();
+    private final List<String> archivedAlerts = new ArrayList<>();
 
-    private static final ReentrantReadWriteLock alertLock = new ReentrantReadWriteLock();
-    private static final ReadLock alertReadLock = alertLock.readLock();
-    private static final WriteLock alertWriteLock = alertLock.writeLock();
-
-    private static AlertService instance = null;
-
-    private AlertService() {
-        // empty constructor
-    }
-
-    public static synchronized AlertService getInstance() {
-        if (instance == null) {
-            instance = new AlertService();
-        }
-        return instance;
-    }
+    private final ReentrantReadWriteLock alertLock = new ReentrantReadWriteLock();
+    private final ReadLock alertReadLock = alertLock.readLock();
+    private final WriteLock alertWriteLock = alertLock.writeLock();
 
     public void addAlert(String chamber, String crop, String message) {
         alertWriteLock.lock();

@@ -10,24 +10,11 @@ import org.svfrms.util.EnergyUsage;
 import org.svfrms.util.WaterUsage;
 
 public class Usage {
-    private volatile static int totalWaterUsage = 0;
-    private volatile static int totalEnergyUsage = 0;
-    private static final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
-    private static final ReadLock usageReadLock = usageLock.readLock();
-    private static final WriteLock usageWriteLock = usageLock.writeLock();
-
-    private static Usage instance = null;
-
-    private Usage() {
-        // empty constructor
-    }
-
-    public static synchronized Usage getInstance() {
-        if (instance == null) {
-            instance = new Usage();
-        }
-        return instance;
-    }
+    private int totalWaterUsage = 0;
+    private int totalEnergyUsage = 0;
+    private final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
+    private final ReadLock usageReadLock = usageLock.readLock();
+    private final WriteLock usageWriteLock = usageLock.writeLock();
 
     public int getTotalEnergyUsage() {
         usageReadLock.lock();
