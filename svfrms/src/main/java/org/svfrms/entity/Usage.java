@@ -52,7 +52,7 @@ public class Usage {
         try {
             totalEnergyUsage += energyUsage;
         } finally {
-            usageWriteLock.lock();
+            usageWriteLock.unlock();
         }
     }
 
@@ -61,7 +61,7 @@ public class Usage {
         try {
             totalWaterUsage += waterUsage;
         } finally {
-            usageWriteLock.lock();
+            usageWriteLock.unlock();
         }
     }
 
