@@ -17,10 +17,9 @@ public class ControlService {
 
     public void applyControl(ControlRequest controlRequest) {
         ChamberState state = ChamberRegistry.getState(controlRequest.chamber());
-        controlRequest.control().apply(state);
         String result = controlRequest.control().apply(state);
         String activated = controlRequest.control().getLabel() + " Activated";
-        trackingService.trackAlert(controlRequest.chamber(), activated);
+        trackingService.trackAction(controlRequest.chamber(), activated);
         loggingService.printControlLog(controlRequest.chamber(), activated);
         loggingService.printControlLog(controlRequest.chamber(), result);
     }

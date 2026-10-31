@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
@@ -17,7 +18,7 @@ import org.svfrms.entity.Usage;
 import org.svfrms.service.events.AlertService;
 
 public class ReportService {
-    private static final List<String> reports = new ArrayList<>();
+    private static final List<String> reports = Collections.synchronizedList(new ArrayList<>());
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
 

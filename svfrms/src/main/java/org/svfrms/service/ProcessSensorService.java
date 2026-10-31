@@ -52,7 +52,7 @@ public class ProcessSensorService {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
-        Crop cropEnum = sensor.isCropSpecific() ? Crop.valueOf(crop.toUpperCase()) : Crop.DEFAULT;
+        Crop cropEnum = sensor.isCropSpecific() ? Crop.valueOf(crop.toUpperCase().replace(' ', '_')) : Crop.DEFAULT;
         CropProfile cropProfile = cropEnum.getCropProfile();
         Map<SensorType, SensorLimits> limitsMap = cropProfile.limits();
 
@@ -67,17 +67,16 @@ public class ProcessSensorService {
             return;
         }
 
-        Control control = sensor.getControlToUse(breach);
-
-        if (control == null) {
-            return;
-        }
-        controlQueue.addControlRequest(new ControlRequest(chamber, control));
-
         String message = alertMessage(sensor, breach);
         trackingService.trackAlert(chamber, message);
         alertService.addAlert(chamber, crop, message);
 
         usage.recordBreachUsage(cropProfile, sensor, breach);
+
+        Control control = sensor.getControlToUse(breach);
+
+        if (control != null) {
+            controlQueue.addControlRequest(new ControlRequest(chamber, control));
+        }
     }
 }
