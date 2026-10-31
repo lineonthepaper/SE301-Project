@@ -3,9 +3,8 @@ package org.svfrms.enums;
 import java.util.Map;
 
 import org.svfrms.entity.CropProfile;
-import org.svfrms.util.EnergyUsage;
+import org.svfrms.util.BreachUsage;
 import org.svfrms.util.SensorLimits;
-import org.svfrms.util.WaterUsage;
 
 public enum Crop {
     TOMATO(
@@ -14,19 +13,19 @@ public enum Crop {
                             SensorType.TEMPERATURE, new SensorLimits(28, 22),
                             SensorType.HUMIDITY, new SensorLimits(80, 60),
                             SensorType.SOIL, new SensorLimits(45)),
-                    Map.of(SensorType.TEMPERATURE, new EnergyUsage(10, 15)),
+                    Map.of(SensorType.TEMPERATURE, new BreachUsage(10, 15)),
                     Map.of(
-                            SensorType.HUMIDITY, new WaterUsage(0, 20),
-                            SensorType.SOIL, new WaterUsage(0, 50)))),
+                            SensorType.HUMIDITY, new BreachUsage(0, 20),
+                            SensorType.SOIL, new BreachUsage(0, 50)))),
     STRAWBERRY(
             new CropProfile(
                     Map.of(
                             SensorType.TEMPERATURE, new SensorLimits(24, 18),
                             SensorType.HUMIDITY, new SensorLimits(85, 70)),
                     Map.of(
-                            SensorType.TEMPERATURE, new EnergyUsage(10, 15)),
+                            SensorType.TEMPERATURE, new BreachUsage(10, 15)),
                     Map.of(
-                            SensorType.HUMIDITY, new WaterUsage(0, 25)))),
+                            SensorType.HUMIDITY, new BreachUsage(0, 25)))),
     LETTUCE(
             new CropProfile(
                     Map.of(
