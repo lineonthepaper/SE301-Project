@@ -35,7 +35,7 @@ public class AlertService implements AlertSink {
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
 
-    public synchronized List<String> getAlerts() {
+    public List<String> getAlerts() {
         alertReadLock.lock();
         try {
             return new ArrayList<>(alerts);
@@ -44,7 +44,7 @@ public class AlertService implements AlertSink {
         }
     }
 
-    public synchronized String archiveAlerts() {
+    public String archiveAlerts() {
         alertWriteLock.lock();
         try {
             ArrayList<String> toArchive = new ArrayList<>();
