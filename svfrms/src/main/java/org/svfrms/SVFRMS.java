@@ -16,8 +16,8 @@ import org.svfrms.service.events.TrackingService;
 
 public class SVFRMS {
     public static void main(String[] args) {
-        List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4");
-        List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili");
+        List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4", "CH5");
+        List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili", "Kale");
 
         ReportService reportService = ReportService.getInstance();
         AlertService alertService = AlertService.getInstance();
