@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
-import java.util.TreeSet;
 
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberSummary;
@@ -65,8 +64,7 @@ public class ReportService {
 
             if (chamberSummaries.size() > 0) {
                 reportLines.add("--- chamber wise summary ---");
-                TreeSet<String> sortedChambers = new TreeSet<String>(chamberSummaries.keySet());
-                for (String chamber : sortedChambers) {
+                for (String chamber : chamberSummaries.keySet()) {
                     ChamberSummary summary = chamberSummaries.get(chamber);
                     reportLines.add(chamber + " -> Alerts=" + summary.getAlerts() + ", Actions="
                             + summary.getMitigationActions()
