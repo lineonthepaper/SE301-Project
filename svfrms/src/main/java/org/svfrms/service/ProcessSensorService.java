@@ -46,7 +46,7 @@ public class ProcessSensorService {
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
-    public synchronized void process(SensorType sensor, double value) throws InterruptedException {
+    public void process(SensorType sensor, double value) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
