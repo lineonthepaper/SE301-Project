@@ -1,7 +1,9 @@
 package org.svfrms;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,11 +44,19 @@ public class SVFRMS {
         controlQueueThread.start();
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chambers.size())) {
+            List<Callable<?>> chamberCallableList = new ArrayList<>();
             for (Chamber chamber : chambers) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamber,
                         chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
-
-                exec.execute(new ChamberRunnable(processSensorService, usage, random));
+                chamberCallableList.add(
+                        Executors.callable(
+                                new ChamberRunnable(processSensorService, usage, random)));
+            }
+            try {
+                exec.invokeAll(chamberCallableList);
+            } catch (InterruptedException e) {
+                System.out.println("Thread was interrupted before completing its task.");
+                System.exit(0);
             }
         }
 
