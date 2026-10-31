@@ -31,11 +31,11 @@ public class AlertService {
     }
 
     public void addAlert(String chamber, String crop, String message) {
-        alertReadLock.lock();
+        alertWriteLock.lock();
         try {
             alerts.add(message);
         } finally {
-            alertReadLock.unlock();
+            alertWriteLock.unlock();
         }
         System.out.println("[" + chamber + "][" + crop + "][ALERT] " + message);
     }
