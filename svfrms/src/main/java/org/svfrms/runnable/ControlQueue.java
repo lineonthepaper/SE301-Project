@@ -19,8 +19,12 @@ public class ControlQueue implements Runnable {
         queue.put(STOP);
     }
 
-    public BlockingQueue<Command> getQueue() {
-        return queue;
+    public synchronized BlockingQueue<Command> getQueue() {
+        BlockingQueue<Command> queueCopy = new ArrayBlockingQueue<>(ControlConstants.controlQueueSize);
+        for (Command c : queue) {
+            queueCopy.add(c);
+        }
+        return queueCopy;
     }
 
     @Override
