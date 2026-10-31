@@ -1,8 +1,6 @@
 package org.svfrms.entity;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.svfrms.enums.Breach;
 import org.svfrms.enums.SensorType;
@@ -10,46 +8,23 @@ import org.svfrms.port.UsageRecorder;
 import org.svfrms.util.BreachUsage;
 
 public class Usage implements UsageRecorder {
-    private int totalWaterUsage = 0;
-    private int totalEnergyUsage = 0;
-    private final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
-    private final ReadLock usageReadLock = usageLock.readLock();
-    private final WriteLock usageWriteLock = usageLock.writeLock();
+    private final AtomicInteger totalWaterUsage = new AtomicInteger();
+    private final AtomicInteger totalEnergyUsage = new AtomicInteger();
 
     public int getTotalEnergyUsage() {
-        usageReadLock.lock();
-        try {
-            return totalEnergyUsage;
-        } finally {
-            usageReadLock.unlock();
-        }
+        return totalEnergyUsage.get();
     }
 
     public int getTotalWaterUsage() {
-        usageReadLock.lock();
-        try {
-            return totalWaterUsage;
-        } finally {
-            usageReadLock.unlock();
-        }
+        return totalWaterUsage.get();
     }
 
     public void recordEnergyUsage(int energyUsage) {
-        usageWriteLock.lock();
-        try {
-            totalEnergyUsage += energyUsage;
-        } finally {
-            usageWriteLock.unlock();
-        }
+        totalEnergyUsage.addAndGet(energyUsage);
     }
 
     public void recordWaterUsage(int waterUsage) {
-        usageWriteLock.lock();
-        try {
-            totalWaterUsage += waterUsage;
-        } finally {
-            usageWriteLock.unlock();
-        }
+        totalWaterUsage.addAndGet(waterUsage);
     }
 
     @Override
