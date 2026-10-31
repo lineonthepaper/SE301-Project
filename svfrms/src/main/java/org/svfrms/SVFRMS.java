@@ -27,11 +27,11 @@ public class SVFRMS {
                 new Chamber("CH5", Crop.KALE));
 
         ChamberRegistry chamberRegistry = new ChamberRegistry();
-        ReportService reportService = new ReportService(chamberRegistry);
+        Usage usage = new Usage();
+        ReportService reportService = new ReportService(chamberRegistry, usage);
         LoggingService loggingService = new LoggingService();
         TrackingService trackingService = new TrackingService(chamberRegistry);
         AlertService alertService = new AlertService(trackingService);
-        Usage usage = new Usage();
 
         ControlQueue controlQueue = new ControlQueue();
         ControlService controlService = new ControlService(chamberRegistry, trackingService, loggingService,
@@ -56,9 +56,9 @@ public class SVFRMS {
         }
 
         reportService.addReport(alertService.archiveAlerts());
-        reportService.printDailyReport(alertService, usage);
+        reportService.printDailyReport(alertService);
 
         System.out.println("System finished sensor processing.");
-        reportService.saveArchiveReport(alertService, usage);
+        reportService.saveArchiveReport(alertService);
     }
 }

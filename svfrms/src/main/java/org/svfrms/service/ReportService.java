@@ -21,12 +21,14 @@ public class ReportService {
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
     private final ChamberRegistry chamberRegistry;
+    private final Usage usage;
 
-    public ReportService(ChamberRegistry chamberRegistry) {
+    public ReportService(ChamberRegistry chamberRegistry, Usage usage) {
         this.chamberRegistry = chamberRegistry;
+        this.usage = usage;
     }
 
-    private List<String> getSummaryLines(AlertService alertService, Usage usage) {
+    private List<String> getSummaryLines(AlertService alertService) {
         List<String> summaryLines = new ArrayList<>();
         summaryLines.add("Generated Alerts: " + alertService.getTotalAlertsGenerated());
         summaryLines.add("Active Alerts: " + alertService.getAlerts().size());
@@ -35,9 +37,9 @@ public class ReportService {
         return summaryLines;
     }
 
-    public void printDailyReport(AlertService alertService, Usage usage) {
+    public void printDailyReport(AlertService alertService) {
         System.out.println("===== DAILY REPORT =====");
-        for (String line : getSummaryLines(alertService, usage)) {
+        for (String line : getSummaryLines(alertService)) {
             System.out.println(line);
         }
         reports.add("Daily Report");
@@ -47,7 +49,7 @@ public class ReportService {
         reports.add(report);
     }
 
-    public void saveArchiveReport(AlertService alertService, Usage usage) {
+    public void saveArchiveReport(AlertService alertService) {
         try {
             Files.createDirectories(ARCHIVE_DIR);
 
@@ -57,7 +59,7 @@ public class ReportService {
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
             reportLines.add("Timestamp: " + new Date());
-            reportLines.addAll(getSummaryLines(alertService, usage));
+            reportLines.addAll(getSummaryLines(alertService));
             reportLines.add("Archived alerts: " + archivedAlerts.size());
             reportLines.add("---");
             reportLines.addAll(reports);
