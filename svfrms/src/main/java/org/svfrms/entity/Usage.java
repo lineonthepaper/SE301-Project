@@ -1,68 +1,42 @@
 package org.svfrms.entity;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.svfrms.enums.Breach;
 import org.svfrms.enums.SensorType;
-import org.svfrms.util.EnergyUsage;
-import org.svfrms.util.WaterUsage;
+import org.svfrms.port.UsageRecorder;
+import org.svfrms.util.BreachUsage;
 
-public class Usage {
-    private int totalWaterUsage = 0;
-    private int totalEnergyUsage = 0;
-    private final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
-    private final ReadLock usageReadLock = usageLock.readLock();
-    private final WriteLock usageWriteLock = usageLock.writeLock();
+public class Usage implements UsageRecorder {
+    private final AtomicInteger totalWaterUsage = new AtomicInteger();
+    private final AtomicInteger totalEnergyUsage = new AtomicInteger();
 
     public int getTotalEnergyUsage() {
-        usageReadLock.lock();
-        try {
-            return totalEnergyUsage;
-        } finally {
-            usageReadLock.unlock();
-        }
+        return totalEnergyUsage.get();
     }
 
     public int getTotalWaterUsage() {
-        usageReadLock.lock();
-        try {
-            return totalWaterUsage;
-        } finally {
-            usageReadLock.unlock();
-        }
+        return totalWaterUsage.get();
     }
 
     public void recordEnergyUsage(int energyUsage) {
-        usageWriteLock.lock();
-        try {
-            totalEnergyUsage += energyUsage;
-        } finally {
-            usageWriteLock.unlock();
-        }
+        totalEnergyUsage.addAndGet(energyUsage);
     }
 
     public void recordWaterUsage(int waterUsage) {
-        usageWriteLock.lock();
-        try {
-            totalWaterUsage += waterUsage;
-        } finally {
-            usageWriteLock.unlock();
-        }
+        totalWaterUsage.addAndGet(waterUsage);
     }
 
+    @Override
     public void recordBreachUsage(CropProfile cropProfile, SensorType sensor, Breach breach) {
-        EnergyUsage energyUsage = cropProfile.energyUsageMap().get(sensor);
+        BreachUsage energyUsage = cropProfile.energyUsageMap().get(sensor);
         if (energyUsage != null) {
-            recordEnergyUsage(breach == Breach.HIGH ? energyUsage.getHighBreachUsage()
-                    : energyUsage.getLowBreachUsage());
+            recordEnergyUsage(energyUsage.amountFor(breach));
         }
 
-        WaterUsage waterUsage = cropProfile.waterUsageMap().get(sensor);
+        BreachUsage waterUsage = cropProfile.waterUsageMap().get(sensor);
         if (waterUsage != null) {
-            recordWaterUsage(breach == Breach.HIGH ? waterUsage.getHighBreachUsage()
-                    : waterUsage.getLowBreachUsage());
+            recordWaterUsage(waterUsage.amountFor(breach));
         }
     }
 }

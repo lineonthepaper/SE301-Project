@@ -31,7 +31,7 @@ public class ControlQueue implements Runnable {
         }
     }
 
-    public void executeSafely(Command command) {
+    private void executeSafely(Command command) {
         try {
             command.execute();
         } catch (RuntimeException e) {

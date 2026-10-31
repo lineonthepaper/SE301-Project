@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
-import java.util.TreeSet;
 
 import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberSummary;
@@ -21,6 +20,11 @@ public class ReportService {
     private final List<String> reports = Collections.synchronizedList(new ArrayList<>());
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
+    private final ChamberRegistry chamberRegistry;
+
+    public ReportService(ChamberRegistry chamberRegistry) {
+        this.chamberRegistry = chamberRegistry;
+    }
 
     private List<String> getSummaryLines(AlertService alertService, Usage usage) {
         List<String> summaryLines = new ArrayList<>();
@@ -48,7 +52,7 @@ public class ReportService {
             Files.createDirectories(ARCHIVE_DIR);
 
             List<String> archivedAlerts = alertService.getArchivedAlerts();
-            SortedMap<String, ChamberSummary> chamberSummaries = ChamberRegistry.getSummariesByChamber();
+            SortedMap<String, ChamberSummary> chamberSummaries = chamberRegistry.getSummariesByChamber();
 
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");
@@ -60,8 +64,7 @@ public class ReportService {
 
             if (chamberSummaries.size() > 0) {
                 reportLines.add("--- chamber wise summary ---");
-                TreeSet<String> sortedChambers = new TreeSet<String>(chamberSummaries.keySet());
-                for (String chamber : sortedChambers) {
+                for (String chamber : chamberSummaries.keySet()) {
                     ChamberSummary summary = chamberSummaries.get(chamber);
                     reportLines.add(chamber + " -> Alerts=" + summary.getAlerts() + ", Actions="
                             + summary.getMitigationActions()
