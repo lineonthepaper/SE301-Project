@@ -19,7 +19,7 @@ public class ControlService {
         ChamberState state = ChamberRegistry.getState(controlRequest.chamber());
         String result = controlRequest.control().apply(state);
         String activated = controlRequest.control().getLabel() + " Activated";
-        trackingService.trackAlert(controlRequest.chamber(), activated);
+        trackingService.trackAction(controlRequest.chamber(), activated);
         loggingService.printControlLog(controlRequest.chamber(), activated);
         loggingService.printControlLog(controlRequest.chamber(), result);
     }
