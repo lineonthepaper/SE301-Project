@@ -6,10 +6,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import org.svfrms.enums.Breach;
 import org.svfrms.enums.SensorType;
+import org.svfrms.port.UsageRecorder;
 import org.svfrms.util.EnergyUsage;
 import org.svfrms.util.WaterUsage;
 
-public class Usage {
+public class Usage implements UsageRecorder {
     private int totalWaterUsage = 0;
     private int totalEnergyUsage = 0;
     private final ReentrantReadWriteLock usageLock = new ReentrantReadWriteLock();
@@ -52,6 +53,7 @@ public class Usage {
         }
     }
 
+    @Override
     public void recordBreachUsage(CropProfile cropProfile, SensorType sensor, Breach breach) {
         EnergyUsage energyUsage = cropProfile.energyUsageMap().get(sensor);
         if (energyUsage != null) {

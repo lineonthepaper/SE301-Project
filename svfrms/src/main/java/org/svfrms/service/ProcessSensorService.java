@@ -2,44 +2,42 @@ package org.svfrms.service;
 
 import java.util.Map;
 
-import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
 import org.svfrms.entity.CropProfile;
-import org.svfrms.entity.Usage;
 import org.svfrms.enums.Breach;
 import org.svfrms.enums.Control;
 import org.svfrms.enums.Crop;
 import org.svfrms.enums.SensorType;
-import org.svfrms.service.control.ControlService;
-import org.svfrms.service.events.AlertService;
-import org.svfrms.service.events.LoggingService;
-import org.svfrms.service.events.TrackingService;
+import org.svfrms.port.AlertSink;
+import org.svfrms.port.ControlRequester;
+import org.svfrms.port.SensorLog;
+import org.svfrms.port.UsageRecorder;
 import org.svfrms.util.SensorLimits;
 
 public class ProcessSensorService {
     private final String chamber;
     private final String crop;
-    private final ControlService controlService;
+    private final ControlRequester controlRequester;
 
     private final ChamberState state;
-    private final LoggingService loggingService;
-    private final TrackingService trackingService;
-    private final AlertService alertService;
+    private final SensorLog sensorLog;
+    private final AlertSink alertSink;
+    private final UsageRecorder usageRecorder;
 
-    public ProcessSensorService(String chamber, String crop, ControlService controlService,
-            LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
+    public ProcessSensorService(String chamber, String crop, ChamberState state,
+            ControlRequester controlRequester, SensorLog sensorLog, AlertSink alertSink, UsageRecorder usageRecorder) {
         this.chamber = chamber;
         this.crop = crop;
-        this.controlService = controlService;
+        this.controlRequester = controlRequester;
 
-        this.state = ChamberRegistry.getState(chamber);
-        this.loggingService = loggingService;
-        this.trackingService = trackingService;
-        this.alertService = alertService;
+        this.state = state;
+        this.sensorLog = sensorLog;
+        this.alertSink = alertSink;
+        this.usageRecorder = usageRecorder;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
-        loggingService.addLog("Processing " + crop + " " + sensor + " = " + value);
+        sensorLog.addLog("Processing " + crop + " " + sensor + " = " + value);
     }
 
     private String alertMessage(SensorType sensor, Breach breach) {
@@ -47,7 +45,7 @@ public class ProcessSensorService {
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
-    public synchronized void process(SensorType sensor, double value, Usage usage) throws InterruptedException {
+    public synchronized void process(SensorType sensor, double value) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 
@@ -67,15 +65,14 @@ public class ProcessSensorService {
         }
 
         String message = alertMessage(sensor, breach);
-        trackingService.trackAlert(chamber, message);
-        alertService.addAlert(chamber, crop, message);
+        alertSink.addAlert(chamber, crop, message);
 
-        usage.recordBreachUsage(cropProfile, sensor, breach);
+        usageRecorder.recordBreachUsage(cropProfile, sensor, breach);
 
         Control control = sensor.getControlToUse(breach);
 
         if (control != null) {
-            controlService.requestControl(chamber, control);
+            controlRequester.requestControl(chamber, control);
         }
     }
 }

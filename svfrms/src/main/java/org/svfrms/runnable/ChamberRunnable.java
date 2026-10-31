@@ -20,11 +20,11 @@ public class ChamberRunnable implements Runnable {
     public void run() {
         try {
             for (int i = 0; i < 20; i++) {
-                processSensorService.process(SensorType.TEMPERATURE, 10 + random.nextInt(30), usage);
-                processSensorService.process(SensorType.HUMIDITY, 40 + random.nextInt(60), usage);
-                processSensorService.process(SensorType.SOIL, 20 + random.nextInt(60), usage);
-                processSensorService.process(SensorType.LIGHT, 300 + random.nextInt(900), usage);
-                processSensorService.process(SensorType.NUTRIENT, 20 + random.nextInt(80), usage);
+                processSensorService.process(SensorType.TEMPERATURE, 10 + random.nextInt(30));
+                processSensorService.process(SensorType.HUMIDITY, 40 + random.nextInt(60));
+                processSensorService.process(SensorType.SOIL, 20 + random.nextInt(60));
+                processSensorService.process(SensorType.LIGHT, 300 + random.nextInt(900));
+                processSensorService.process(SensorType.NUTRIENT, 20 + random.nextInt(80));
 
                 usage.recordWaterUsage(2);
                 usage.recordEnergyUsage(1);

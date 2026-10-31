@@ -21,6 +21,11 @@ public class ReportService {
     private final List<String> reports = Collections.synchronizedList(new ArrayList<>());
     private static final Path ARCHIVE_DIR = Paths.get("archive");
     private static final Path REPORT_FILE = ARCHIVE_DIR.resolve("daily_report.txt");
+    private final ChamberRegistry chamberRegistry;
+
+    public ReportService(ChamberRegistry chamberRegistry) {
+        this.chamberRegistry = chamberRegistry;
+    }
 
     private List<String> getSummaryLines(AlertService alertService, Usage usage) {
         List<String> summaryLines = new ArrayList<>();
@@ -48,7 +53,7 @@ public class ReportService {
             Files.createDirectories(ARCHIVE_DIR);
 
             List<String> archivedAlerts = alertService.getArchivedAlerts();
-            SortedMap<String, ChamberSummary> chamberSummaries = ChamberRegistry.getSummariesByChamber();
+            SortedMap<String, ChamberSummary> chamberSummaries = chamberRegistry.getSummariesByChamber();
 
             ArrayList<String> reportLines = new ArrayList<String>();
             reportLines.add("===== DAILY REPORT =====");

@@ -4,13 +4,19 @@ import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberSummary;
 
 public class TrackingService {
+    private final ChamberRegistry chamberRegistry;
+
+    public TrackingService(ChamberRegistry chamberRegistry) {
+        this.chamberRegistry = chamberRegistry;
+    }
+
     public void trackAlert(String chamber, String message) {
-        ChamberSummary summary = ChamberRegistry.getSummary(chamber);
+        ChamberSummary summary = chamberRegistry.getSummary(chamber);
         summary.recordAlert(message);
     }
 
     public void trackAction(String chamber, String message) {
-        ChamberSummary summary = ChamberRegistry.getSummary(chamber);
+        ChamberSummary summary = chamberRegistry.getSummary(chamber);
         summary.recordMitigationAction(message);
     }
 }

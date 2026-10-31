@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.Usage;
 import org.svfrms.runnable.ChamberRunnable;
 import org.svfrms.runnable.ControlQueue;
@@ -19,21 +20,24 @@ public class SVFRMS {
         List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4", "CH5");
         List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili", "Kale");
 
-        ReportService reportService = new ReportService();
-        AlertService alertService = new AlertService();
+        ChamberRegistry chamberRegistry = new ChamberRegistry();
+        ReportService reportService = new ReportService(chamberRegistry);
         LoggingService loggingService = new LoggingService();
-        TrackingService trackingService = new TrackingService();
+        TrackingService trackingService = new TrackingService(chamberRegistry);
+        AlertService alertService = new AlertService(trackingService);
         Usage usage = new Usage();
 
         ControlQueue controlQueue = new ControlQueue();
-        ControlService controlService = new ControlService(trackingService, loggingService, controlQueue);
+        ControlService controlService = new ControlService(chamberRegistry, trackingService, loggingService,
+                controlQueue);
         Thread controlQueueThread = new Thread(controlQueue);
         controlQueueThread.start();
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size())) {
             for (int i = 0; i < chamberList.size(); i++) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
-                        cropList.get(i), controlService, loggingService, trackingService, alertService);
+                        cropList.get(i), chamberRegistry.getState(chamberList.get(i)), controlService, loggingService,
+                        alertService, usage);
 
                 exec.execute(new ChamberRunnable(processSensorService, usage));
             }
