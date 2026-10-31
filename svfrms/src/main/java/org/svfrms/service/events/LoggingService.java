@@ -7,13 +7,16 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
-public class LoggingService {
+import org.svfrms.port.SensorLog;
+
+public class LoggingService implements SensorLog {
     private final List<String> sensorLogs = new ArrayList<>();
 
     private final ReentrantReadWriteLock loggingLock = new ReentrantReadWriteLock();
     private final ReadLock loggingReadLock = loggingLock.readLock();
     private final WriteLock loggingWriteLock = loggingLock.writeLock();
 
+    @Override
     public void addLog(String message) {
         loggingWriteLock.lock();
         try {

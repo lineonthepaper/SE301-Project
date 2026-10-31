@@ -6,9 +6,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
+import org.svfrms.port.AlertSink;
 import org.svfrms.service.ReportService;
 
-public class AlertService {
+public class AlertService implements AlertSink {
 
     private final List<String> alerts = new ArrayList<>();
     private final List<String> archivedAlerts = new ArrayList<>();
@@ -23,6 +24,7 @@ public class AlertService {
         this.trackingService = trackingService;
     }
 
+    @Override
     public void addAlert(String chamber, String crop, String message) {
         trackingService.trackAlert(chamber, message);
         alertWriteLock.lock();
