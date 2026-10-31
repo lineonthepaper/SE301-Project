@@ -20,7 +20,7 @@ public class SVFRMS {
         List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili", "Kale");
 
         ReportService reportService = new ReportService();
-        AlertService alertService = AlertService.getInstance();
+        AlertService alertService = new AlertService();
         LoggingService loggingService = LoggingService.getInstance();
         TrackingService trackingService = TrackingService.getInstance();
         Usage usage = new Usage();
