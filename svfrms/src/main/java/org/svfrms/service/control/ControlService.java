@@ -10,9 +10,9 @@ public class ControlService {
     private final TrackingService trackingService;
     private final LoggingService loggingService;
 
-    public ControlService() {
-        this.trackingService = TrackingService.getInstance();
-        this.loggingService = LoggingService.getInstance();
+    public ControlService(TrackingService trackingService, LoggingService loggingService) {
+        this.trackingService = trackingService;
+        this.loggingService = loggingService;
     }
 
     public void applyControl(ControlRequest controlRequest) {

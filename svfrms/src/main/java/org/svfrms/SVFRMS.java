@@ -10,6 +10,8 @@ import org.svfrms.runnable.ControlQueue;
 import org.svfrms.service.ReportService;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
+import org.svfrms.service.events.LoggingService;
+import org.svfrms.service.events.TrackingService;
 
 public class SVFRMS {
     public static void main(String[] args) {
@@ -18,9 +20,12 @@ public class SVFRMS {
 
         ReportService reportService = ReportService.getInstance();
         AlertService alertService = AlertService.getInstance();
+        LoggingService loggingService = LoggingService.getInstance();
+        TrackingService trackingService = TrackingService.getInstance();
         Usage usage = Usage.getInstance();
 
-        ControlQueue controlQueue = new ControlQueue(new ControlService()::applyControl);
+        ControlQueue controlQueue = new ControlQueue(
+                new ControlService(trackingService, loggingService)::applyControl);
         Thread controlQueueThread = new Thread(controlQueue);
         controlQueueThread.start();
 
