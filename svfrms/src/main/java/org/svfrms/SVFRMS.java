@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.svfrms.entity.Chamber;
 import org.svfrms.entity.ChamberRegistry;
@@ -42,26 +44,24 @@ public class SVFRMS {
                 controlQueue);
         Thread controlQueueThread = new Thread(controlQueue);
         controlQueueThread.start();
+        List<Future<?>> futures = new ArrayList<>();
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chambers.size())) {
-            List<Callable<?>> chamberCallableList = new ArrayList<>();
             for (Chamber chamber : chambers) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamber,
                         chamberRegistry.getState(chamber), controlService, loggingService, alertService, usage);
-                chamberCallableList.add(
-                        new Callable<Void>() {
-                            @Override
-                            public Void call() {
-                                (new ChamberRunnable(processSensorService, usage, random)).run();
-                                return null;
-                            }
-                        });
+                futures.add(exec.submit(
+                        new ChamberRunnable(processSensorService, usage, random)));
             }
             try {
-                exec.invokeAll(chamberCallableList);
+                for (Future<?> future : futures) {
+                    future.get();
+                }
             } catch (InterruptedException e) {
                 System.out.println("Thread was interrupted before completing its task.");
                 System.exit(1);
+            } catch (ExecutionException e) {
+                System.out.println("There was an error executing this thread");
             }
         }
 
