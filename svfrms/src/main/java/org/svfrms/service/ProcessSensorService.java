@@ -2,7 +2,6 @@ package org.svfrms.service;
 
 import java.util.Map;
 
-import org.svfrms.entity.ChamberRegistry;
 import org.svfrms.entity.ChamberState;
 import org.svfrms.entity.CropProfile;
 import org.svfrms.entity.Usage;
@@ -26,13 +25,13 @@ public class ProcessSensorService {
     private final TrackingService trackingService;
     private final AlertService alertService;
 
-    public ProcessSensorService(String chamber, String crop, ControlService controlService,
+    public ProcessSensorService(String chamber, String crop, ChamberState state, ControlService controlService,
             LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
         this.chamber = chamber;
         this.crop = crop;
         this.controlService = controlService;
 
-        this.state = ChamberRegistry.getState(chamber);
+        this.state = state;
         this.loggingService = loggingService;
         this.trackingService = trackingService;
         this.alertService = alertService;
