@@ -21,7 +21,7 @@ public class SVFRMS {
 
         ReportService reportService = new ReportService();
         AlertService alertService = new AlertService();
-        LoggingService loggingService = LoggingService.getInstance();
+        LoggingService loggingService = new LoggingService();
         TrackingService trackingService = TrackingService.getInstance();
         Usage usage = new Usage();
 

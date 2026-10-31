@@ -8,24 +8,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 public class LoggingService {
-    private static final List<String> sensorLogs = new ArrayList<>();
+    private final List<String> sensorLogs = new ArrayList<>();
 
-    private static final ReentrantReadWriteLock loggingLock = new ReentrantReadWriteLock();
-    private static final ReadLock loggingReadLock = loggingLock.readLock();
-    private static final WriteLock loggingWriteLock = loggingLock.writeLock();
-
-    private static LoggingService instance;
-
-    private LoggingService() {
-        // empty constructor
-    }
-
-    public static synchronized LoggingService getInstance() {
-        if (instance == null) {
-            instance = new LoggingService();
-        }
-        return instance;
-    }
+    private final ReentrantReadWriteLock loggingLock = new ReentrantReadWriteLock();
+    private final ReadLock loggingReadLock = loggingLock.readLock();
+    private final WriteLock loggingWriteLock = loggingLock.writeLock();
 
     public void addLog(String message) {
         loggingWriteLock.lock();
