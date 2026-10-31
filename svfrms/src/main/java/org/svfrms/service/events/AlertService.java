@@ -17,7 +17,14 @@ public class AlertService {
     private final ReadLock alertReadLock = alertLock.readLock();
     private final WriteLock alertWriteLock = alertLock.writeLock();
 
+    private final TrackingService trackingService;
+
+    public AlertService(TrackingService trackingService) {
+        this.trackingService = trackingService;
+    }
+
     public void addAlert(String chamber, String crop, String message) {
+        trackingService.trackAlert(chamber, message);
         alertWriteLock.lock();
         try {
             alerts.add(message);

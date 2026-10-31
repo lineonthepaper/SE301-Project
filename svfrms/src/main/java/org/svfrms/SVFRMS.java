@@ -22,9 +22,9 @@ public class SVFRMS {
 
         ChamberRegistry chamberRegistry = new ChamberRegistry();
         ReportService reportService = new ReportService(chamberRegistry);
-        AlertService alertService = new AlertService();
         LoggingService loggingService = new LoggingService();
         TrackingService trackingService = new TrackingService(chamberRegistry);
+        AlertService alertService = new AlertService(trackingService);
         Usage usage = new Usage();
 
         ControlQueue controlQueue = new ControlQueue();
@@ -37,7 +37,7 @@ public class SVFRMS {
             for (int i = 0; i < chamberList.size(); i++) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
                         cropList.get(i), chamberRegistry.getState(chamberList.get(i)), controlService, loggingService,
-                        trackingService, alertService);
+                        alertService);
 
                 exec.execute(new ChamberRunnable(processSensorService, usage));
             }

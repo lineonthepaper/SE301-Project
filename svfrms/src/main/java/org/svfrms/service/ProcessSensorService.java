@@ -12,7 +12,6 @@ import org.svfrms.enums.SensorType;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
-import org.svfrms.service.events.TrackingService;
 import org.svfrms.util.SensorLimits;
 
 public class ProcessSensorService {
@@ -22,18 +21,16 @@ public class ProcessSensorService {
 
     private final ChamberState state;
     private final LoggingService loggingService;
-    private final TrackingService trackingService;
     private final AlertService alertService;
 
     public ProcessSensorService(String chamber, String crop, ChamberState state, ControlService controlService,
-            LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
+            LoggingService loggingService, AlertService alertService) {
         this.chamber = chamber;
         this.crop = crop;
         this.controlService = controlService;
 
         this.state = state;
         this.loggingService = loggingService;
-        this.trackingService = trackingService;
         this.alertService = alertService;
     }
 
@@ -66,7 +63,6 @@ public class ProcessSensorService {
         }
 
         String message = alertMessage(sensor, breach);
-        trackingService.trackAlert(chamber, message);
         alertService.addAlert(chamber, crop, message);
 
         usage.recordBreachUsage(cropProfile, sensor, breach);
