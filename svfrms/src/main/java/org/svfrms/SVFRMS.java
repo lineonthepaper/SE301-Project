@@ -55,29 +55,8 @@ public class SVFRMS {
             e.printStackTrace();
         }
 
-        Thread genReport = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                reportService.printDailyReport(alertService, usage);
-            }
-        });
-
-        Thread archiveAlerts = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                alertService.archiveAlerts(reportService);
-            }
-        });
-
-        archiveAlerts.start();
-
-        try {
-            archiveAlerts.join();
-            genReport.start();
-            genReport.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        alertService.archiveAlerts(reportService);
+        reportService.printDailyReport(alertService, usage);
 
         System.out.println("System finished sensor processing.");
         reportService.saveArchiveReport(alertService, usage);
