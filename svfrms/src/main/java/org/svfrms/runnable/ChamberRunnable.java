@@ -11,8 +11,8 @@ public class ChamberRunnable implements Runnable {
     private final Usage usage;
     private static final Random random = new Random();
 
-    public ChamberRunnable(String chamber, String crop, ControlQueue controlQueue, Usage usage) {
-        this.processSensorService = new ProcessSensorService(chamber, crop, controlQueue);
+    public ChamberRunnable(ProcessSensorService processSensorService, Usage usage) {
+        this.processSensorService = processSensorService;
         this.usage = usage;
     }
 

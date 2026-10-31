@@ -47,6 +47,11 @@ public enum Crop {
                     Map.of(
                             SensorType.TEMPERATURE, new SensorLimits(27, 18)),
                     Map.of(), Map.of())),
+    KALE(
+            new CropProfile(
+                    Map.of(
+                            SensorType.TEMPERATURE, new SensorLimits(24, 7)),
+                    Map.of(), Map.of())),
     DEFAULT(
             new CropProfile(
                     Map.of(

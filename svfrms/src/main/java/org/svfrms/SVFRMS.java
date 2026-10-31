@@ -7,29 +7,35 @@ import java.util.concurrent.Executors;
 import org.svfrms.entity.Usage;
 import org.svfrms.runnable.ChamberRunnable;
 import org.svfrms.runnable.ControlQueue;
+import org.svfrms.service.ProcessSensorService;
 import org.svfrms.service.ReportService;
 import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
+import org.svfrms.service.events.LoggingService;
+import org.svfrms.service.events.TrackingService;
 
 public class SVFRMS {
     public static void main(String[] args) {
-        List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4");
-        List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili");
+        List<String> chamberList = List.of("CH1", "CH2", "CH3", "CH4", "CH5");
+        List<String> cropList = List.of("Tomato", "Strawberry", "Lettuce", "Chili", "Kale");
 
         ReportService reportService = ReportService.getInstance();
         AlertService alertService = AlertService.getInstance();
+        LoggingService loggingService = LoggingService.getInstance();
+        TrackingService trackingService = TrackingService.getInstance();
         Usage usage = Usage.getInstance();
 
-        ControlQueue controlQueue = new ControlQueue(new ControlService()::applyControl);
+        ControlQueue controlQueue = new ControlQueue();
+        ControlService controlService = new ControlService(trackingService, loggingService, controlQueue);
         Thread controlQueueThread = new Thread(controlQueue);
         controlQueueThread.start();
 
         try (ExecutorService exec = Executors.newFixedThreadPool(chamberList.size())) {
             for (int i = 0; i < chamberList.size(); i++) {
-                ChamberRunnable chamberRunnable = new ChamberRunnable(chamberList.get(i), cropList.get(i),
-                        controlQueue, usage);
+                ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
+                        cropList.get(i), controlService, loggingService, trackingService, alertService);
 
-                exec.execute(chamberRunnable);
+                exec.execute(new ChamberRunnable(processSensorService, usage));
             }
         }
 

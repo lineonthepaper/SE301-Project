@@ -2,22 +2,17 @@ package org.svfrms.runnable;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.function.Consumer;
 
-import org.svfrms.request.ControlRequest;
+import org.svfrms.request.Command;
 import org.svfrms.util.constants.ControlConstants;
 
 public class ControlQueue implements Runnable {
-    private static final ControlRequest STOP = new ControlRequest("STOP", null);
-    private final Consumer<ControlRequest> executor;
-    private final BlockingQueue<ControlRequest> queue = new ArrayBlockingQueue<>(ControlConstants.controlQueueSize);
+    private static final Command STOP = () -> {
+    };
+    private final BlockingQueue<Command> queue = new ArrayBlockingQueue<>(ControlConstants.controlQueueSize);
 
-    public ControlQueue(Consumer<ControlRequest> executor) {
-        this.executor = executor;
-    }
-
-    public void addControlRequest(ControlRequest controlRequest) throws InterruptedException {
-        queue.put(controlRequest);
+    public void addCommand(Command command) throws InterruptedException {
+        queue.put(command);
     }
 
     public void shutdown() throws InterruptedException {
@@ -27,20 +22,20 @@ public class ControlQueue implements Runnable {
     @Override
     public void run() {
         try {
-            ControlRequest request;
-            while ((request = queue.take()) != STOP) {
-                executeSafely(request);
+            Command command;
+            while ((command = queue.take()) != STOP) {
+                executeSafely(command);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 
-    public void executeSafely(ControlRequest request) {
+    public void executeSafely(Command command) {
         try {
-            executor.accept(request);
+            command.execute();
         } catch (RuntimeException e) {
-            System.out.println("Control request failed for " + request + ": " + e.getMessage());
+            System.out.println("Control request failed for " + command + ": " + e.getMessage());
         }
     }
 }

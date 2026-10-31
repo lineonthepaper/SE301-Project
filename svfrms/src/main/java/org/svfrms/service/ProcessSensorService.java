@@ -10,8 +10,7 @@ import org.svfrms.enums.Breach;
 import org.svfrms.enums.Control;
 import org.svfrms.enums.Crop;
 import org.svfrms.enums.SensorType;
-import org.svfrms.request.ControlRequest;
-import org.svfrms.runnable.ControlQueue;
+import org.svfrms.service.control.ControlService;
 import org.svfrms.service.events.AlertService;
 import org.svfrms.service.events.LoggingService;
 import org.svfrms.service.events.TrackingService;
@@ -20,23 +19,23 @@ import org.svfrms.util.SensorLimits;
 public class ProcessSensorService {
     private final String chamber;
     private final String crop;
-    private final ControlQueue controlQueue;
+    private final ControlService controlService;
 
     private final ChamberState state;
     private final LoggingService loggingService;
     private final TrackingService trackingService;
     private final AlertService alertService;
 
-    public ProcessSensorService(String chamber, String crop,
-            ControlQueue controlQueue) {
+    public ProcessSensorService(String chamber, String crop, ControlService controlService,
+            LoggingService loggingService, TrackingService trackingService, AlertService alertService) {
         this.chamber = chamber;
         this.crop = crop;
-        this.controlQueue = controlQueue;
+        this.controlService = controlService;
 
         this.state = ChamberRegistry.getState(chamber);
-        this.loggingService = LoggingService.getInstance();
-        this.trackingService = TrackingService.getInstance();
-        this.alertService = AlertService.getInstance();
+        this.loggingService = loggingService;
+        this.trackingService = trackingService;
+        this.alertService = alertService;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
@@ -76,7 +75,7 @@ public class ProcessSensorService {
         Control control = sensor.getControlToUse(breach);
 
         if (control != null) {
-            controlQueue.addControlRequest(new ControlRequest(chamber, control));
+            controlService.requestControl(chamber, control);
         }
     }
 }
