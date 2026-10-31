@@ -22,9 +22,10 @@ public class ProcessSensorService {
     private final ChamberState state;
     private final LoggingService loggingService;
     private final AlertService alertService;
+    private final Usage usage;
 
     public ProcessSensorService(String chamber, String crop, ChamberState state, ControlService controlService,
-            LoggingService loggingService, AlertService alertService) {
+            LoggingService loggingService, AlertService alertService, Usage usage) {
         this.chamber = chamber;
         this.crop = crop;
         this.controlService = controlService;
@@ -32,6 +33,7 @@ public class ProcessSensorService {
         this.state = state;
         this.loggingService = loggingService;
         this.alertService = alertService;
+        this.usage = usage;
     }
 
     private void printProcessSensorLog(String sensor, double value) {
@@ -43,7 +45,7 @@ public class ProcessSensorService {
         return subject + " " + breach.getLabel() + " " + sensor.getAlertName();
     }
 
-    public synchronized void process(SensorType sensor, double value, Usage usage) throws InterruptedException {
+    public synchronized void process(SensorType sensor, double value) throws InterruptedException {
         printProcessSensorLog(sensor.getLogName(), value);
         state.set(sensor, value);
 

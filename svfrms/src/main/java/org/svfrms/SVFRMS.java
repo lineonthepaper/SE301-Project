@@ -37,7 +37,7 @@ public class SVFRMS {
             for (int i = 0; i < chamberList.size(); i++) {
                 ProcessSensorService processSensorService = new ProcessSensorService(chamberList.get(i),
                         cropList.get(i), chamberRegistry.getState(chamberList.get(i)), controlService, loggingService,
-                        alertService);
+                        alertService, usage);
 
                 exec.execute(new ChamberRunnable(processSensorService, usage));
             }
