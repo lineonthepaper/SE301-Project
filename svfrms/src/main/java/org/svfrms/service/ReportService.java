@@ -87,7 +87,7 @@ public class ReportService {
             System.out.println("Archive report saved to: " + REPORT_FILE.toAbsolutePath());
         } catch (Exception e) {
             System.out.println("Could not save archive report: " + e.getMessage());
-            System.exit(2);
+            System.exit(3);
         }
     }
 }

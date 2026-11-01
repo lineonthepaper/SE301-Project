@@ -61,6 +61,7 @@ public class SVFRMS {
                 System.exit(1);
             } catch (ExecutionException e) {
                 System.out.println("There was an error executing this thread");
+                System.exit(2);
             }
         }
 
